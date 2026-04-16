@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="Wendy">
-<meta name="description" content="给营销朋友的 AI 入门——从大模型到 OpenClaw。一份资深营销人写给资深营销人的 AI 实操分享。">
-<title>给营销朋友的 AI 入门 — 从大模型到 OpenClaw</title>
+<meta name="author" content="Wendy Zhang">
+<meta name="description" content="给营销朋友的 AI Playbook——一个营销人写的、给营销人看的 AI 实操手册。">
+<title>AI Playbook for Marketers — by Wendy.Zhang</title>
 
 <!-- Open Graph / 社交分享卡片 -->
 <meta property="og:type" content="article">
-<meta property="og:title" content="给营销朋友的 AI 入门 — 从大模型到 OpenClaw">
-<meta property="og:description" content="一份资深营销人写给资深营销人的 AI 实操分享。五层 AI 世界地图 + 三个学 AI 的笨办法 + 上手 OpenClaw 实操。by Wendy · 2026 / 04">
+<meta property="og:title" content="给营销朋友的 AI Playbook">
+<meta property="og:description" content="一个营销人写的、给营销人看的 AI 实操手册。不教术语、讲人话，教你怎么用、避开我踩过的坑。by Wendy.Zhang">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:site_name" content="Wendy 的分享">
+<meta property="og:site_name" content="AI Playbook for Marketers">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="给营销朋友的 AI 入门 — 从大模型到 OpenClaw">
-<meta name="twitter:description" content="一份资深营销人写给资深营销人的 AI 实操分享。">
+<meta name="twitter:title" content="给营销朋友的 AI Playbook">
+<meta name="twitter:description" content="一个营销人写的、给营销人看的 AI 实操手册。">
 
-<!-- Favicon: 🦞 -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A6%9E%3C/text%3E%3C/svg%3E">
+<!-- Favicon: 🪄 -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%AA%84%3C/text%3E%3C/svg%3E">
 <style>
   :root {
     --text: #37352f;
@@ -64,7 +64,7 @@
     right: 0;
     height: 3px;
     background: transparent;
-    z-index: 100;
+    z-index: 200;
     pointer-events: none;
   }
   .progress-bar-fill {
@@ -74,7 +74,59 @@
     transition: width 0.08s linear;
   }
 
-  /* —— Layout —— */
+  /* ============================================
+     —— TAB NAVIGATION ——
+     ============================================ */
+  .tab-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    font-family: inherit;
+  }
+  .tab-btn:hover {
+    color: var(--text);
+  }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* —— Tab panels —— */
+  .tab-panel {
+    display: none;
+  }
+  .tab-panel.active {
+    display: block;
+  }
+
+  /* ============================================
+     —— LAYOUT (used inside content tabs) ——
+     ============================================ */
   .layout {
     display: grid;
     grid-template-columns: 260px minmax(0, 1fr);
@@ -86,11 +138,11 @@
   /* —— Sidebar —— */
   .sidebar {
     position: sticky;
-    top: 0;
+    top: 49px; /* below tab bar */
     align-self: start;
-    height: 100vh;
+    height: calc(100vh - 49px);
     overflow-y: auto;
-    padding: 80px 20px 60px 32px;
+    padding: 40px 20px 60px 32px;
     border-right: 1px solid var(--border);
     scrollbar-width: thin;
     scrollbar-color: var(--border-strong) transparent;
@@ -99,20 +151,6 @@
   .sidebar::-webkit-scrollbar-track { background: transparent; }
   .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   .sidebar::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
-
-  .sidebar-brand {
-    font-size: 13px;
-    color: var(--text-tertiary);
-    margin-bottom: 4px;
-    letter-spacing: 0.02em;
-  }
-  .sidebar-brand-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.4;
-    margin-bottom: 24px;
-  }
 
   .sidebar-toc-label {
     font-size: 11px;
@@ -179,37 +217,45 @@
     font-weight: 500;
   }
 
-  /* —— Page —— */
+  /* —— Page (content area) —— */
   .page {
-    padding: 80px 60px 120px;
+    padding: 40px 40px 100px;
     max-width: 720px;
   }
 
   .page-header {
-    margin-bottom: 56px;
+    margin-bottom: 40px;
   }
   .page-icon {
-    font-size: 64px;
+    font-size: 52px;
     line-height: 1;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    display: inline-block;
+    filter: drop-shadow(0 0 12px rgba(105, 64, 165, 0.25));
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: 50% 70%;
+    cursor: default;
+  }
+  .page-icon:hover {
+    transform: rotate(-8deg) scale(1.05);
   }
   .page-title {
-    font-size: 40px;
+    font-size: 32px;
     font-weight: 700;
     line-height: 1.25;
     letter-spacing: -0.01em;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: var(--text);
   }
   .page-subtitle {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 400;
     color: var(--text-secondary);
-    line-height: 1.4;
-    margin-bottom: 20px;
+    line-height: 1.6;
+    margin-bottom: 14px;
   }
   .page-meta {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-tertiary);
     display: flex;
     gap: 8px;
@@ -222,28 +268,28 @@
   .page-body { font-size: 16px; }
   .page-body p { margin: 12px 0; line-height: 1.75; }
   .page-body h1 {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 700;
     line-height: 1.3;
-    margin-top: 64px;
+    margin-top: 52px;
     margin-bottom: 8px;
     letter-spacing: -0.005em;
-    scroll-margin-top: 24px;
+    scroll-margin-top: 80px;
   }
   .page-body h1:first-child { margin-top: 0; }
   .page-body h2 {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     line-height: 1.3;
-    margin-top: 44px;
+    margin-top: 36px;
     margin-bottom: 8px;
-    scroll-margin-top: 24px;
+    scroll-margin-top: 80px;
   }
   .page-body h3 {
-    font-size: 19px;
+    font-size: 17px;
     font-weight: 600;
     line-height: 1.4;
-    margin-top: 30px;
+    margin-top: 26px;
     margin-bottom: 6px;
     color: var(--text);
   }
@@ -702,6 +748,474 @@
     margin-bottom: 14px;
   }
 
+  /* Workflow diagram — 建站三工序 */
+  .workflow {
+    margin: 32px 0;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .workflow-step {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 16px 16px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .workflow-step:hover {
+    border-color: var(--accent-border);
+  }
+  .workflow-num {
+    display: inline-block;
+    align-self: center;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .workflow-stage {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .workflow-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .workflow-tool {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .workflow-tool strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .workflow-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  /* —— Wendy 私心小便签 —— */
+  .wendy-note {
+    display: block;
+    margin: 18px 0 0;
+    padding: 14px 20px 15px;
+    background: linear-gradient(135deg, #f8f4fd 0%, #fbf6fa 100%);
+    border: 1px dashed var(--accent-border);
+    border-radius: 14px;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text);
+    position: relative;
+    box-shadow: 0 1px 0 rgba(105, 64, 165, 0.04);
+  }
+  .wendy-note-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--bg);
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-right: 8px;
+    border: 1px solid var(--accent-border);
+    letter-spacing: 0.04em;
+    vertical-align: 2px;
+    white-space: nowrap;
+  }
+  .wendy-note strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ============================================
+     —— HOMEPAGE SPECIFIC ——
+     ============================================ */
+  .home-container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 40px 100px;
+  }
+
+  .home-hero {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .home-icon {
+    font-size: 52px;
+    line-height: 1;
+    margin-bottom: 16px;
+    display: inline-block;
+    filter: drop-shadow(0 0 14px rgba(105, 64, 165, 0.28));
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: 50% 70%;
+    cursor: default;
+  }
+  .home-icon:hover {
+    transform: rotate(-12deg) scale(1.08);
+  }
+  .home-title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .home-tagline {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .home-meta {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .home-meta .dot { color: var(--border-strong); }
+
+  /* —— Tips section —— */
+  .home-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tip-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 0 0 56px 0;
+    list-style: none;
+    padding: 0;
+  }
+  .tip-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 20px 20px;
+    position: relative;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .tip-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(105, 64, 165, 0.08);
+  }
+  /* Alternating subtle tilt and bg for "pinned" feel */
+  .tip-card:nth-child(1) { transform: rotate(-0.8deg); background: #faf8ff; }
+  .tip-card:nth-child(2) { transform: rotate(0.5deg); background: #f9f9f6; }
+  .tip-card:nth-child(3) { transform: rotate(-0.3deg); background: #f6f9fa; }
+  .tip-card:nth-child(4) { transform: rotate(0.6deg); background: #faf8f6; }
+  .tip-card:nth-child(5) { transform: rotate(-0.5deg); background: #f8f6fa; }
+  .tip-card:nth-child(1):hover { transform: rotate(-0.8deg) translateY(-3px); }
+  .tip-card:nth-child(2):hover { transform: rotate(0.5deg) translateY(-3px); }
+  .tip-card:nth-child(3):hover { transform: rotate(-0.3deg) translateY(-3px); }
+  .tip-card:nth-child(4):hover { transform: rotate(0.6deg) translateY(-3px); }
+  .tip-card:nth-child(5):hover { transform: rotate(-0.5deg) translateY(-3px); }
+
+  .tip-pin {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .tip-card:nth-child(2) .tip-pin { background: #e8a87c; }
+  .tip-card:nth-child(3) .tip-pin { background: #7fb5b0; }
+  .tip-card:nth-child(4) .tip-pin { background: #d4a5a5; }
+  .tip-card:nth-child(5) .tip-pin { background: #9b8ec4; }
+
+  .tip-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.45;
+  }
+  .tip-desc {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* —— Entry cards —— */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .entry-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    text-decoration: none;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .entry-card:hover {
+    border-color: var(--accent-border);
+    box-shadow: 0 2px 12px rgba(105, 64, 165, 0.08);
+    text-decoration: none;
+  }
+  .entry-card-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    line-height: 1.2;
+  }
+  .entry-card-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .entry-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.4;
+  }
+  .entry-card-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .entry-card-badge {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* ============================================
+     —— TOOLS TAB ——
+     ============================================ */
+  .heads-up {
+    margin: 24px 0 28px;
+    padding: 16px 20px;
+    background: #fef9ed;
+    border: 1px solid #f3e4b8;
+    border-radius: 8px;
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: var(--text);
+  }
+  .heads-up p { margin: 6px 0; }
+  .heads-up p:first-child { margin-top: 0; }
+  .heads-up p:last-child { margin-bottom: 0; }
+  .heads-up-title {
+    font-weight: 700;
+    color: #8b6914;
+    margin-bottom: 6px !important;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tool-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 28px 0 36px;
+  }
+  .tool-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 26px;
+    background: var(--bg);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .tool-card:hover {
+    border-color: var(--accent-border);
+    box-shadow: 0 2px 14px rgba(105, 64, 165, 0.06);
+  }
+  .tool-card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .tool-card-icon { font-size: 22px; line-height: 1; }
+  .tool-card-name {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .tool-card-tagline {
+    font-size: 13.5px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    padding-left: 34px;
+    font-weight: 500;
+  }
+  .tool-card-row {
+    display: flex;
+    gap: 14px;
+    padding: 11px 0;
+    border-top: 1px dashed var(--border);
+  }
+  .tool-card-row:first-of-type {
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+    margin-top: 6px;
+  }
+  .tool-card-row-label {
+    flex-shrink: 0;
+    width: 86px;
+    font-size: 12.5px;
+    color: var(--text-tertiary);
+    font-weight: 500;
+    padding-top: 2px;
+    letter-spacing: 0.02em;
+  }
+  .tool-card-row-body {
+    flex: 1;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text);
+    min-width: 0;
+  }
+
+  /* —— Combo cards —— */
+  .combo-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin: 24px 0 36px;
+  }
+  .combo-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 26px;
+    background: var(--bg);
+  }
+  .combo-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .combo-icon { font-size: 20px; line-height: 1; }
+  .combo-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .combo-sub {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin-bottom: 14px;
+    padding-left: 30px;
+  }
+  .combo-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    padding: 14px 16px;
+    background: var(--accent-soft);
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .combo-tool {
+    font-weight: 600;
+    color: var(--accent);
+    padding: 4px 10px;
+    background: var(--bg);
+    border-radius: 6px;
+    border: 1px solid var(--accent-border);
+    white-space: nowrap;
+  }
+  .combo-arrow {
+    color: var(--text-tertiary);
+    font-weight: 500;
+  }
+  .combo-desc {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text);
+  }
+  .combo-desc p { margin: 8px 0; }
+  .combo-note {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: var(--bg-subtle);
+    border-left: 3px solid var(--accent-border);
+    border-radius: 4px;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+  }
+  .combo-note a { color: var(--accent); font-weight: 500; }
+
+  /* —— Placeholder for coming-soon tabs —— */
+  .placeholder-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 100px 40px;
+    text-align: center;
+  }
+  .placeholder-icon {
+    font-size: 56px;
+    margin-bottom: 20px;
+  }
+  .placeholder-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .placeholder-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
   /* —— Footer —— */
   .page-footer {
     margin-top: 80px;
@@ -753,11 +1267,21 @@
       max-width: 720px;
     }
     .sidebar { display: none; }
-    .page { padding: 60px 40px 100px; max-width: none; }
+    .page { padding: 40px 40px 100px; max-width: none; }
   }
 
   @media (max-width: 720px) {
-    .page { padding: 48px 22px 80px; }
+    .tab-btn { padding: 12px 14px; font-size: 13px; }
+
+    .home-container { padding: 40px 22px 80px; }
+    .home-icon { font-size: 56px; }
+    .home-title { font-size: 28px; }
+    .home-tagline { font-size: 16px; }
+    .tip-board { grid-template-columns: 1fr 1fr; }
+    .tip-card:nth-child(5) { grid-column: 1 / -1; max-width: 320px; justify-self: center; }
+    .card-grid { grid-template-columns: 1fr; }
+
+    .page { padding: 36px 22px 80px; }
     .page-icon { font-size: 48px; margin-bottom: 16px; }
     .page-title { font-size: 30px; }
     .page-subtitle { font-size: 17px; }
@@ -810,6 +1334,28 @@
     .nest-label { font-size: 14px; }
     .nest-sub { font-size: 11.5px; }
 
+    .workflow {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .workflow-arrow {
+      transform: rotate(90deg);
+      padding: 2px 0;
+    }
+    .workflow-step { padding: 14px 14px 12px; }
+    .workflow-name { font-size: 14px; margin-bottom: 8px; }
+    .workflow-tool { font-size: 12px; padding-top: 8px; }
+
+    .tool-card { padding: 18px 18px; }
+    .tool-card-tagline { padding-left: 34px; }
+    .tool-card-row { flex-direction: column; gap: 4px; padding: 10px 0; }
+    .tool-card-row-label { width: auto; padding-top: 0; }
+    .tool-card-row-body { font-size: 14px; }
+
+    .combo-card { padding: 18px 18px; }
+    .combo-sub { padding-left: 30px; }
+    .combo-flow { padding: 12px 14px; font-size: 13px; }
+
     .back-to-top {
       right: 16px;
       bottom: 20px;
@@ -821,7 +1367,8 @@
 
   /* —— Print —— */
   @media print {
-    .progress-bar, .sidebar, .back-to-top { display: none !important; }
+    .progress-bar, .sidebar, .back-to-top, .tab-bar { display: none !important; }
+    .tab-panel { display: block !important; }
     .layout { grid-template-columns: 1fr; max-width: none; }
     .page { padding: 0 20px; max-width: none; }
     .top-toc { break-inside: avoid; }
@@ -836,682 +1383,828 @@
 
 <div class="progress-bar"><div class="progress-bar-fill" id="progress-fill"></div></div>
 
-<div class="layout">
+<!-- ============================================
+     TAB BAR
+     ============================================ -->
+<nav class="tab-bar">
+  <button class="tab-btn active" data-tab="home">首页</button>
+  <button class="tab-btn" data-tab="map">AI 世界地图</button>
+  <button class="tab-btn" data-tab="openclaw">OpenClaw</button>
+  <button class="tab-btn" data-tab="vibecoding">Vibe Coding</button>
+  <button class="tab-btn" data-tab="tools">好用的 AI</button>
+</nav>
 
-  <aside class="sidebar">
-    <div class="sidebar-brand">by Wendy · 2026 / 04</div>
-    <div class="sidebar-brand-title">给营销朋友的 AI 入门<br>从大模型到 OpenClaw</div>
-    <div class="sidebar-toc-label">目录</div>
-    <ul class="sidebar-toc">
-      <li>
-        <a class="part-link" href="#part-1">01 · AI 世界地图</a>
-        <ul class="sub-list">
-          <li><a class="sub-link" href="#layer-1">第一层:大模型 LLM</a></li>
-          <li><a class="sub-link" href="#layer-2">第二层:Chatbot</a></li>
-          <li><a class="sub-link" href="#layer-3">第三层:Workflow</a></li>
-          <li><a class="sub-link" href="#layer-4">第四层:Agent</a></li>
-          <li><a class="sub-link" href="#layer-5">第五层:垂直工具</a></li>
-          <li><a class="sub-link" href="#map-summary">五层地图小结</a></li>
-        </ul>
-      </li>
-      <li>
-        <a class="part-link" href="#part-2">02 · 学 AI 的三个笨办法</a>
-        <ul class="sub-list">
-          <li><a class="sub-link" href="#hack-1">一:截图问 AI</a></li>
-          <li><a class="sub-link" href="#hack-2">二:Cursor 翻译报错</a></li>
-          <li><a class="sub-link" href="#hack-3">三:永远多问一个问题</a></li>
-        </ul>
-      </li>
-      <li>
-        <a class="part-link" href="#part-3">03 · 上手 OpenClaw</a>
-        <ul class="sub-list">
-          <li><a class="sub-link" href="#oc-what">A. 是什么 / 为什么是它</a></li>
-          <li><a class="sub-link" href="#oc-install">B. 一分钟装好</a></li>
-          <li><a class="sub-link" href="#oc-tool">C. Tool — 它能干哪些活</a></li>
-          <li><a class="sub-link" href="#oc-skill">D. 教养 — 给它写 Skill</a></li>
-          <li><a class="sub-link" href="#oc-cases">D-2. 真实案例</a></li>
-          <li><a class="sub-link" href="#oc-multi">E. 多只虾的部署</a></li>
-          <li><a class="sub-link" href="#oc-resources">F. 资源清单</a></li>
-        </ul>
-      </li>
-    </ul>
-  </aside>
+<!-- ============================================
+     TAB: 首页
+     ============================================ -->
+<div class="tab-panel active" id="tab-home">
+  <div class="home-container">
 
-  <article class="page">
-
-    <header class="page-header">
-      <div class="page-icon">🦞</div>
-      <h1 class="page-title">给营销朋友的 AI 入门</h1>
-      <p class="page-subtitle">从大模型到 OpenClaw</p>
-      <div class="page-meta">
-        <span>by Wendy</span>
+    <header class="home-hero">
+      <div class="home-icon">🪄</div>
+      <h1 class="home-title">给营销朋友的 AI Playbook</h1>
+      <p class="home-tagline">不教术语、讲人话，分享我的用法、避开我踩过的坑。</p>
+      <div class="home-meta">
+        <span>by Wendy.Zhang</span>
         <span class="dot">·</span>
-        <span>2026 / 04</span>
+        <span>用 AI 搭系统的营销人</span>
         <span class="dot">·</span>
-        <span>预计阅读 25 分钟</span>
+        <span>ICC Group</span>
       </div>
     </header>
 
-    <div class="page-body">
-
-      <p>三件事:</p>
-      <ol>
-        <li><strong>AI 世界的地图</strong>——五层结构。看到任何新词都能找到它在哪一层。</li>
-        <li><strong>三个学 AI 的笨办法</strong>——工具层面的,回去就能用。</li>
-        <li><strong>OpenClaw 实操</strong>——从认识它,到装好它,到教养出一只属于自己的"虾"。</li>
-      </ol>
-
-      <nav class="top-toc" aria-label="目录">
-        <div class="top-toc-title">目录</div>
-        <ol>
-          <li><a href="#part-1">第一部分:AI 世界地图</a></li>
-          <li><a href="#part-2">第二部分:学 AI 的三个笨办法</a></li>
-          <li><a href="#part-3">第三部分:上手 OpenClaw</a></li>
-        </ol>
-      </nav>
-
-      <hr>
-
-      <h1 id="part-1">第一部分:AI 世界地图</h1>
-
-      <p>一个底层认知:</p>
-
-      <blockquote>
-        <p>现在几乎所有 AI 产品,本质上都是同一个东西——<strong>大模型</strong>——披着不同的外衣站在你面前。</p>
-      </blockquote>
-
-      <p>外衣有五层,从最里面的核心到最外面的产品,长这样:</p>
-
-      <div class="layer-stack">
-        <div class="layer-row" data-level="5">
-          <div class="layer-badge">L5</div>
-          <div class="layer-body">
-            <div class="layer-name">垂直工具</div>
-            <div class="layer-detail">妙鸭 / Midjourney / Cursor / Notion AI / Gamma…</div>
-          </div>
+    <!-- 板块入口 -->
+    <div class="home-section-title">看看分享</div>
+    <div class="card-grid">
+      <a class="entry-card" onclick="switchTab('map')">
+        <div class="entry-card-icon">🗺️</div>
+        <div class="entry-card-body">
+          <div class="entry-card-title">AI 世界地图</div>
+          <div class="entry-card-desc">零基础的小伙伴先来这里——行业术语和黑话过一遍，下次看到不懵。</div>
         </div>
-        <div class="layer-row" data-level="4">
-          <div class="layer-badge">L4</div>
-          <div class="layer-body">
-            <div class="layer-name">Agent <span class="layer-sub">代理人 / 智能体</span></div>
-            <div class="layer-detail">能自己拆任务、调工具、写记忆 — OpenClaw 在这一层</div>
-          </div>
+      </a>
+      <a class="entry-card" onclick="switchTab('openclaw')">
+        <div class="entry-card-icon">🦞</div>
+        <div class="entry-card-body">
+          <div class="entry-card-title">上手 OpenClaw</div>
+          <div class="entry-card-desc">想养一只自己的 AI 小虾？从装好到教它读你的 SOP。</div>
         </div>
-        <div class="layer-row" data-level="3">
-          <div class="layer-badge">L3</div>
-          <div class="layer-body">
-            <div class="layer-name">Workflow <span class="layer-sub">流程编排</span></div>
-            <div class="layer-detail">人画好流程图,模型按图走 — Coze / Dify / 扣子</div>
-          </div>
+      </a>
+      <a class="entry-card" onclick="switchTab('vibecoding')">
+        <div class="entry-card-icon">🛠️</div>
+        <div class="entry-card-body">
+          <div class="entry-card-title">Vibe Coding 入门</div>
+          <div class="entry-card-desc">完全不会写代码也能搭网站。你现在看的这个页面就是我用嘴"写"的。</div>
         </div>
-        <div class="layer-row" data-level="2">
-          <div class="layer-badge">L2</div>
-          <div class="layer-body">
-            <div class="layer-name">Chatbot <span class="layer-sub">对话机器人</span></div>
-            <div class="layer-detail">大模型 + 聊天外壳 — 豆包 / ChatGPT / DeepSeek 网页版</div>
-          </div>
+      </a>
+      <a class="entry-card" onclick="switchTab('tools')">
+        <div class="entry-card-icon">⚡</div>
+        <div class="entry-card-body">
+          <div class="entry-card-title">好用的 AI 工具</div>
+          <div class="entry-card-desc">不是看测评，是我自己踩过坑、真的每天在用的。</div>
         </div>
-        <div class="layer-row" data-level="1">
-          <div class="layer-badge">L1</div>
-          <div class="layer-body">
-            <div class="layer-name">大模型 <span class="layer-sub">LLM</span></div>
-            <div class="layer-detail">一个会接龙的超大文件 — GPT / Claude / DeepSeek / 豆包后端</div>
-          </div>
-        </div>
-      </div>
+      </a>
+    </div>
 
-      <p>每一层都把内层"包"起来,再加一点自己的东西。英文术语保留是故意的——下次你在文章、播客、产品介绍里撞见 "Agent"、"Workflow"、"Chatbot",看一眼就知道它在哪一层。每一层我都给两件事:<strong>它是什么</strong> + <strong>它为什么能这样</strong>。</p>
+    <!-- Tips / 原则 -->
+    <div class="home-section-title" style="margin-top: 48px;">亲测有效的 AI 协作原则</div>
+    <ul class="tip-board">
+      <li class="tip-card">
+        <div class="tip-pin"></div>
+        <div class="tip-title">先拆自己的活，再找工具</div>
+        <div class="tip-desc">不是"AI 能干什么"，而是"我的工作里有哪些环节"。先拆清楚业务流程，才知道 AI 该插在哪一步。工具不重要，工作流才重要。</div>
+      </li>
+      <li class="tip-card">
+        <div class="tip-pin"></div>
+        <div class="tip-title">永远多问一个问题</div>
+        <div class="tip-desc">AI 的第一个答案是"平均水平答案"。追问一句——"有没有什么坑""换成我的场景要怎么改"——从第二个问题开始才进入真正有用的那一层。</div>
+      </li>
+      <li class="tip-card">
+        <div class="tip-pin"></div>
+        <div class="tip-title">别怕弄坏——你弄不坏</div>
+        <div class="tip-desc">AI 对话随时开新的，代码随时回滚，文件改错了可以撤销。试错成本几乎是零。最大的坑不是"搞砸了"，是"不敢开始"。</div>
+      </li>
+      <li class="tip-card">
+        <div class="tip-pin"></div>
+        <div class="tip-title">看不懂的就截图问 AI，别害羞，直接问</div>
+        <div class="tip-desc">报错、英文文档、看不懂的表格——截图发给豆包 / ChatGPT / DeepSeek，问"这张图在说什么"。别怕问得蠢——AI 不会笑话你，十次里有八次能直接解决。</div>
+      </li>
+      <li class="tip-card">
+        <div class="tip-pin"></div>
+        <div class="tip-title">本地文件的活，交给 Cursor</div>
+        <div class="tip-desc">Cursor 不只是写代码——它是能操作你本地文件的 Agent。批量改文件、整理文件夹、读一堆文档做总结、跑脚本——把整个活儿丢给它，比自己一个个操作快十倍。</div>
+      </li>
+    </ul>
 
-      <hr>
+    <footer class="page-footer">
+      <p>by Wendy.Zhang · 2026</p>
+      <p>一个营销人写的、给营销人看的 AI 实操手册</p>
+    </footer>
 
-      <h2 id="layer-1">第一层:大模型(LLM)</h2>
+  </div>
+</div>
 
-      <h3>它是什么</h3>
+<!-- ============================================
+     TAB: AI 世界地图
+     ============================================ -->
+<div class="tab-panel" id="tab-map">
+  <div class="layout">
 
-      <p>大模型就是最里面那一层。所有你听过的 ChatGPT、豆包、DeepSeek、通义、Claude、Gemini——它们的"脑子"都是大模型。</p>
-
-      <p>大模型本身<strong>不是产品</strong>,它就是一个文件。一个非常大的文件,里面装的是几千亿个数字(业内叫"参数")。这个文件本身不会说话,也不会聊天,也不会画画。它只能干一件事:</p>
-
-      <blockquote>
-        <p>你给它一段话,它预测<strong class="hl">下一个最可能出现的字</strong>是什么。</p>
-      </blockquote>
-
-      <p>就这么简单。一个字一个字接龙接出来的。</p>
-
-      <h3>它为什么能这样</h3>
-
-      <p>这就是大家最容易卡住的地方——"就接龙吗?那它怎么会写代码、会讲笑话、会做 PPT 大纲?"</p>
-
-      <p>它能这样,是因为它接的不是普通的龙,是<strong>在几乎全人类的公开文本里训练过的接龙</strong>。</p>
-
-      <p>简单说三件事:</p>
-
-      <ol>
-        <li><strong>预训练</strong>:它把互联网上能拿到的几乎所有文本——书、论文、新闻、代码、维基、问答——全部读了一遍。读的过程不是"理解",是反复练习"猜下一个字"。猜对就奖励,猜错就调整那几千亿个数字里的一部分。这一步它学会的是<strong>世界的统计规律</strong>:什么样的话后面接什么样的话。</li>
-        <li><strong>对齐训练</strong>:光会接龙还不行,会接成一个胡言乱语的接龙怪。所以训练的人雇了一批人,给它示范"什么是好的回答 / 什么是坏的回答",再用人的反馈微调它的行为。这一步让它<strong>听得懂人话</strong>,知道"你问问题的时候它要回答你",而不是接着你的话往下编。</li>
-        <li><strong>越大越聪明</strong>:参数从几亿涨到几千亿之后,会出现一个反直觉的现象——它<strong>自己长出</strong>没人教过它的能力,比如一步一步推理、做数学题、写代码。这个现象业内叫"涌现",目前没有完美的解释,但所有大模型公司都在朝同一个方向赌:堆更多数据、更多算力、更大的模型。</li>
-      </ol>
-
-      <p>一句话总结:</p>
-
-      <blockquote>
-        <p><strong class="hl">大模型 = 一个被全人类文本喂大的、会接龙的超大文件。</strong></p>
-      </blockquote>
-
-      <p>它本身不联网、不记得你、不会主动干活。就是一个文件。</p>
-
-      <hr>
-
-      <h2 id="layer-2">第二层:Chatbot(对话机器人)</h2>
-
-      <h3>它是什么</h3>
-
-      <p>豆包、ChatGPT、DeepSeek 网页版——这些都是 <strong>Chatbot</strong>。中文叫"对话机器人"。下次你在任何文章里看到 "chatbot" 这个词,知道它说的就是这一类产品。</p>
-
-      <p>Chatbot = <strong>大模型</strong> + <strong>一个聊天界面</strong> + <strong>一点点把你说的话喂给模型的逻辑</strong>。</p>
-
-      <p>你打字,它把你说的话送进大模型,大模型一个字一个字接龙出回答,再把字一个一个推到屏幕上。</p>
-
-      <p>就这样。</p>
-
-      <h3>它为什么能"记得"你前面说了什么</h3>
-
-      <p>这是一个特别值得讲清楚的点。因为大模型本身<strong>没有记忆</strong>。它每一次回答都是从零开始的。</p>
-
-      <p>那 Chatbot 为什么能接住你前面说过的话?</p>
-
-      <p>因为 Chatbot 这一层做了一个很笨但很有效的事:<strong class="hl">每次你发送消息的时候,它把你们前面所有的对话历史,连同你这次的新问题,一起重新塞给大模型</strong>。</p>
-
-      <p>大模型每次都"读完前情提要再回答"。它不是记得你,是每次都被<strong>重新告知</strong>一遍你是谁、你前面说了什么。</p>
-
-      <p>这也解释了几件事:</p>
-
-      <ul>
-        <li>为什么聊太久会越来越慢、越来越不准——前情提要太长,模型读不动了。</li>
-        <li>为什么开新对话它就完全不认识你了——历史没塞给它。</li>
-        <li>为什么有些产品有"记忆"功能——是产品端帮你存了一份摘要,每次悄悄塞进前情提要里。</li>
+    <aside class="sidebar">
+      <div class="sidebar-toc-label">目录</div>
+      <ul class="sidebar-toc">
+        <li>
+          <a class="part-link" href="#map-intro">AI 世界地图</a>
+          <ul class="sub-list">
+            <li><a class="sub-link" href="#layer-1">第一层：大模型 LLM</a></li>
+            <li><a class="sub-link" href="#layer-2">第二层：Chatbot</a></li>
+            <li><a class="sub-link" href="#layer-3">第三层：Workflow</a></li>
+            <li><a class="sub-link" href="#layer-4">第四层：Agent</a></li>
+            <li><a class="sub-link" href="#layer-5">第五层：垂直工具</a></li>
+            <li><a class="sub-link" href="#map-summary">五层地图小结</a></li>
+          </ul>
+        </li>
+        <li>
+          <a class="part-link" href="#glossary">术语速查</a>
+        </li>
       </ul>
+    </aside>
 
-      <blockquote>
-        <p><strong>Chatbot 就是给大模型套了一个"对话外壳",让它看起来像在和你聊天。</strong></p>
-      </blockquote>
+    <article class="page">
 
-      <hr>
+      <header class="page-header">
+        <div class="page-icon">🗺️</div>
+        <h1 class="page-title">AI 世界地图</h1>
+        <p class="page-subtitle">五层结构——看到任何新词都能找到它在哪一层</p>
+      </header>
 
-      <h2 id="layer-3">第三层:Workflow(流程编排)</h2>
+      <div class="page-body">
 
-      <h3>它是什么</h3>
+        <h1 id="map-intro">一个底层认知</h1>
 
-      <p><strong>Workflow</strong> 中文叫"流程编排"。意思是:<strong>把大模型当成流水线上的一个工人,让它固定做某一步活</strong>。</p>
+        <blockquote>
+          <p>现在几乎所有 AI 产品，本质上都是同一个东西——<strong>大模型</strong>——披着不同的外衣站在你面前。</p>
+        </blockquote>
 
-      <p>比如客服自动回复的 Workflow:</p>
+        <p>外衣有五层，从最里面的核心到最外面的产品，长这样：</p>
 
-<pre><code>用户消息 → 关键词识别 → 调用模型生成回复 → 发回给用户</code></pre>
-
-      <p>或者文案自动生成的 Workflow:</p>
-
-<pre><code>读 brief → 调模型生成五个标题 → 调模型给每个标题写一段正文 → 输出表格</code></pre>
-
-      <p>每一步该干什么,<strong>是人提前画好的</strong>。模型只是流程图里的一个节点。</p>
-
-      <p>国内你可能听过的 Coze、Dify、字节扣子、阿里百炼,还有飞书的智能伙伴——这些大体上都属于 Workflow 这一层。</p>
-
-      <h3>它为什么能跑起来</h3>
-
-      <p>它能跑起来不是因为模型变聪明了,是因为<strong>人把流程拆得足够细</strong>,每一步只让模型干一个它干得动的小活。</p>
-
-      <p>这也是 Workflow 的优点和缺点:</p>
-
-      <ul>
-        <li><strong>优点</strong>:稳定、可控、好排错。每一步在哪儿断了都能查得出来。</li>
-        <li><strong>缺点</strong>:<strong class="hl">它不会自己思考</strong>。流程图画错了、走到一个画图的人没想到的分支,它就傻在那儿了。</li>
-      </ul>
-
-      <p>你可以把 Workflow 理解成:<strong>一个预先设计好动线的工厂</strong>。模型是工人,流程图是动线。你换一个新订单,工厂未必能干。</p>
-
-      <hr>
-
-      <h2 id="layer-4">第四层:Agent(能自己干活的代理人)</h2>
-
-      <h3>它是什么</h3>
-
-      <p>这一层是最近一两年 AI 行业真正的<strong>主战场</strong>。也是 OpenClaw 所在的那一层。</p>
-
-      <p><strong>Agent</strong> 中文一般翻译成"代理人"或"智能体"。简单粗暴的定义就是:</p>
-
-      <blockquote>
-        <p><strong class="hl">Agent = 大模型 + 一双手脚(能调用 Tool)+ 一个循环(能自己决定下一步干什么)+ 一段记忆</strong></p>
-      </blockquote>
-
-      <p>Agent 跟 Workflow 最大的差别是:</p>
-
-      <ul>
-        <li><strong>Workflow</strong> 是<strong>人画好图</strong>,模型按图走。</li>
-        <li><strong>Agent</strong> 是<strong>给模型一个目标</strong>,让它<strong>自己决定</strong>要走哪几步。</li>
-      </ul>
-
-      <p>举个对比:</p>
-
-      <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Workflow</th>
-            <th>Agent</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>输入</strong></td>
-            <td>一个固定的输入格式</td>
-            <td>一个目标,比如"帮我把这周的微博舆情整理成一份给客户的简报"</td>
-          </tr>
-          <tr>
-            <td><strong>步骤</strong></td>
-            <td>人提前画好</td>
-            <td>AI 自己边想边决定</td>
-          </tr>
-          <tr>
-            <td><strong>工具</strong></td>
-            <td>在流程图节点里固定调</td>
-            <td>AI 看情况决定要不要调、调哪个</td>
-          </tr>
-          <tr>
-            <td><strong>出问题</strong></td>
-            <td>流程断在哪一步</td>
-            <td>AI 自己尝试换一个方法</td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-
-      <h3>它为什么能自己干活</h3>
-
-      <p>这是今天最值得停下来讲清楚的一段。</p>
-
-      <p>它能"自己干活",靠的是三件事的拼装:</p>
-
-      <p><strong>第一件:工具调用(手脚)</strong></p>
-
-      <p>光有大模型,它只会输出文字。但人们发现一件事——<strong>你可以让大模型输出一段"调用指令"</strong>,比如"我想用浏览器打开这个网址",然后<strong>外面的程序</strong>真的去帮它打开浏览器,再把结果塞回前情提要给模型看。</p>
-
-      <p>这一下,模型就有手有脚了。它能上网、能读写文件、能发消息、能跑代码。</p>
-
-      <p><strong>第二件:观察—思考—行动—再观察的循环</strong></p>
-
-      <p>模型每次行动完,会被告知"刚才那个动作的结果是什么"。然后它<strong>再决定下一步</strong>。这个过程长这样:</p>
-
-      <div class="loop-diagram">
-        <div class="loop-track">
-          <div class="loop-node">
-            <div class="loop-num">1</div>
-            <div class="loop-name">思考</div>
-            <div class="loop-detail">下一步该做什么</div>
-          </div>
-          <div class="loop-arrow">→</div>
-          <div class="loop-node">
-            <div class="loop-num">2</div>
-            <div class="loop-name">行动</div>
-            <div class="loop-detail">调用一个 Tool</div>
-          </div>
-          <div class="loop-arrow">→</div>
-          <div class="loop-node">
-            <div class="loop-num">3</div>
-            <div class="loop-name">观察</div>
-            <div class="loop-detail">看看结果是什么</div>
-          </div>
-        </div>
-        <div class="loop-back">↻ 回到第 1 步,直到目标达成才停下来</div>
-      </div>
-
-      <p>举个例子,你给它一个目标"帮我查一下半固态电池行业现在头部三家是谁":</p>
-
-      <ol>
-        <li><strong>思考</strong>:我得搜一下"半固态电池 头部企业"。</li>
-        <li><strong>行动</strong>:调用浏览器,搜这个关键词。</li>
-        <li><strong>观察</strong>:搜出来一堆链接,前几条是新闻和行研报告。</li>
-        <li><strong>思考</strong>:行研报告更靠谱,我点开第二条。</li>
-        <li><strong>行动</strong>:调用浏览器读取第二条的正文。</li>
-        <li><strong>观察</strong>:里面提到了五家公司。</li>
-        <li><strong>思考</strong>:但我需要的是"头部三家",再交叉验证一下其它来源。</li>
-        <li>……</li>
-      </ol>
-
-      <p>这个循环它会自己跑十几步、几十步,直到它觉得问题答完了,才停下来给你回答。</p>
-
-      <p><strong>第三件:磁盘上的 markdown 文件(记忆)</strong></p>
-
-      <p>这是今天最反教科书、但也最值得你记住的一段。</p>
-
-      <p>市面上讲 Agent 的文章一般会告诉你:"Agent 有短期记忆和长期记忆。" 这句话不能算错,但<strong>没有解释任何事</strong>。</p>
-
-      <p>真实情况是这样的:</p>
-
-      <blockquote>
-        <p><strong class="hl">Agent 的"记忆",本质上就是存在你电脑里的一堆 markdown 文件。</strong></p>
-      </blockquote>
-
-      <p>模型本身没有记忆——它就是第一层里那个"会接龙的超大文件",每次被调用都是从零开始的。它之所以"记得你",是因为<strong>外面那层程序每次跟它说话之前,都会自动打开几个 markdown 文件、把里面的内容塞进前情提要给它看</strong>。</p>
-
-      <p>OpenClaw 官网的原话说得最直接:</p>
-
-      <blockquote>
-        <p><strong>"The model only 'remembers' what gets saved to disk — there is no hidden state."</strong></p>
-        <p>模型只记得那些被写进磁盘的东西——没有任何隐藏的记忆。</p>
-      </blockquote>
-
-      <p>这些文件就躺在 <code>~/.openclaw/workspace/</code> 下面,一共就这么几个:</p>
-
-      <ul>
-        <li><strong><code>MEMORY.md</code></strong>——<strong>长期记忆</strong>。你告诉过它的那些"持久"的事——偏好、决定、硬事实。每次一开对话就被<strong>自动读进去</strong>。</li>
-        <li><strong><code>memory/2026-04-10.md</code></strong>(每天一份)——<strong>当天的日志</strong>。<strong>今天和昨天</strong>这两份会被自动读进来,作为近期的上下文。</li>
-        <li><strong><code>DREAMS.md</code></strong>(实验中)——<strong>"做梦"机制</strong>写下来的沉淀。OpenClaw 会定期"做梦":把日志里值得长期记住的东西<strong>自动提炼</strong>写进 <code>MEMORY.md</code>,把没价值的丢掉。这让长期记忆不会越滚越肥。</li>
-      </ul>
-
-      <p>"做梦"听着玄,其实是一个非常聪明的工程设计——<strong>让 AI 自己定期整理自己的记忆,从"今天发生了什么"里沉淀出"这件事值得我长期记住"</strong>。</p>
-
-      <p>这才是这一段的关键:</p>
-
-      <blockquote>
-        <p><strong>Agent 的"记忆"——不在某家 SaaS 公司的服务器里,不是黑盒,也不是什么神秘的"向量数据库"。就是你自己电脑里的几个 markdown 文件。打开能读,不爽能改,备份就是复制,删除就是扔进回收站。</strong></p>
-      </blockquote>
-
-      <p>这也是 OpenClaw 这类 Agent <strong>最反 SaaS</strong> 的地方——你跟它说过的所有话、它学过的所有东西、它的"成长轨迹",<strong>全部在你自己的工作区里,看得见、改得动、搬得走</strong>。</p>
-
-      <h3>三件事拼起来</h3>
-
-      <p>有了这三件事——<strong>会用的手脚、能自己跑的循环、写在磁盘上的 markdown 记忆</strong>——模型就从"会接龙的文件"变成了一个<strong>能自己干活的代理人</strong>:</p>
-
-      <div class="formula">
-        <div class="formula-item">
-          <div class="formula-label">手脚</div>
-          <div class="formula-term">Tool</div>
-        </div>
-        <div class="formula-op">+</div>
-        <div class="formula-item">
-          <div class="formula-label">循环</div>
-          <div class="formula-term">Loop</div>
-        </div>
-        <div class="formula-op">+</div>
-        <div class="formula-item">
-          <div class="formula-label">记忆</div>
-          <div class="formula-term">Memory (md)</div>
-        </div>
-        <div class="formula-op">=</div>
-        <div class="formula-result">
-          <div class="formula-label">Agent</div>
-          <div class="formula-term">代理人</div>
-        </div>
-      </div>
-
-      <h3>这一层目前能干到什么程度</h3>
-
-      <p>我自己用 OpenClaw 跑过的真实任务里,它已经能:</p>
-
-      <ul>
-        <li>自己上网搜资料、读完十几篇内容、整理成一份带引用的简报</li>
-        <li>自己读一份很长的 PDF,按我给的框架抽信息进 markdown 表格</li>
-        <li>自己拆我们公司一个真实 brief,按我教过它的方法给出第一版策略草案</li>
-        <li>自己审一篇内容稿,对照我设定的红线挑问题</li>
-      </ul>
-
-      <p>这些事情<strong>没有任何一步是我手动操作的</strong>。我只是给它一个目标,它自己跑。</p>
-
-      <p>但它也不是万能的。它会犯错、会绕远、有时候会卡住。这也是为什么需要"教养"——后面会展开讲怎么教它。</p>
-
-      <hr>
-
-      <h2 id="layer-5">第五层:垂直工具</h2>
-
-      <h3>它是什么</h3>
-
-      <p>垂直工具就是把上面四层任何一层,<strong>包装成一个面向特定场景的产品</strong>。</p>
-
-      <p>营销人最熟的:</p>
-
-      <ul>
-        <li>妙鸭、Midjourney、即梦——图像生成</li>
-        <li>Runway、Sora、可灵——视频生成</li>
-        <li>Notion AI、Gamma、Tome——文档/PPT</li>
-        <li>Cursor、Windsurf、Trae——写代码</li>
-        <li>11Labs、海螺——语音克隆</li>
-      </ul>
-
-      <p>这一层不需要你理解里面的技术,你只需要知道一件事:</p>
-
-      <blockquote>
-        <p><strong>它们好不好用,主要看两件事——里面用的大模型够不够强、外面套的产品交互够不够贴你的场景。</strong></p>
-      </blockquote>
-
-      <p>里层弱,外层再贴心也没用;里层强,外层不贴你的场景,你也用不顺手。</p>
-
-      <hr>
-
-      <h2 id="map-summary">五层地图小结</h2>
-
-      <div class="map-summary">
-        <div class="map-summary-title">从内核到产品</div>
-        <div class="layer-stack" style="margin: 0;">
+        <div class="layer-stack">
           <div class="layer-row" data-level="5">
             <div class="layer-badge">L5</div>
             <div class="layer-body">
               <div class="layer-name">垂直工具</div>
-              <div class="layer-detail">把上面任何一层包装成一个特定场景的产品</div>
+              <div class="layer-detail">妙鸭 / Midjourney / Cursor / Notion AI / Gamma…</div>
             </div>
           </div>
           <div class="layer-row" data-level="4">
             <div class="layer-badge">L4</div>
             <div class="layer-body">
-              <div class="layer-name">Agent</div>
-              <div class="layer-detail">给模型手脚、循环、记忆,让它自己拆任务 — OpenClaw</div>
+              <div class="layer-name">Agent <span class="layer-sub">代理人 / 智能体</span></div>
+              <div class="layer-detail">能自己拆任务、调工具、写记忆 — OpenClaw 在这一层</div>
             </div>
           </div>
           <div class="layer-row" data-level="3">
             <div class="layer-badge">L3</div>
             <div class="layer-body">
-              <div class="layer-name">Workflow</div>
-              <div class="layer-detail">把模型放进人画好的流程图 — Coze / Dify</div>
+              <div class="layer-name">Workflow <span class="layer-sub">流程编排</span></div>
+              <div class="layer-detail">人画好流程图，模型按图走 — Coze / Dify / 扣子</div>
             </div>
           </div>
           <div class="layer-row" data-level="2">
             <div class="layer-badge">L2</div>
             <div class="layer-body">
-              <div class="layer-name">Chatbot</div>
-              <div class="layer-detail">套了一个聊天外壳 — 豆包 / ChatGPT</div>
+              <div class="layer-name">Chatbot <span class="layer-sub">对话机器人</span></div>
+              <div class="layer-detail">大模型 + 聊天外壳 — 豆包 / ChatGPT / DeepSeek 网页版</div>
             </div>
           </div>
           <div class="layer-row" data-level="1">
             <div class="layer-badge">L1</div>
             <div class="layer-body">
-              <div class="layer-name">大模型 / LLM</div>
-              <div class="layer-detail">一个会接龙的超大文件</div>
+              <div class="layer-name">大模型 <span class="layer-sub">LLM</span></div>
+              <div class="layer-detail">一个会接龙的超大文件 — GPT / Claude / DeepSeek / 豆包后端</div>
             </div>
           </div>
         </div>
+
+        <p>每一层都把内层"包"起来，再加一点自己的东西。英文术语保留是故意的——下次你在文章、播客、产品介绍里撞见 "Agent"、"Workflow"、"Chatbot"，看一眼就知道它在哪一层。每一层我都给两件事：<strong>它是什么</strong> + <strong>它为什么能这样</strong>。</p>
+
+        <hr>
+
+        <h2 id="layer-1">第一层：大模型（LLM）</h2>
+
+        <h3>它是什么</h3>
+
+        <p>大模型就是最里面那一层。所有你听过的 ChatGPT、豆包、DeepSeek、通义、Claude、Gemini——它们的"脑子"都是大模型。</p>
+
+        <p>大模型本身<strong>不是产品</strong>，它就是一个文件。一个非常大的文件，里面装的是几千亿个数字（业内叫"参数"）。这个文件本身不会说话，也不会聊天，也不会画画。它只能干一件事：</p>
+
+        <blockquote>
+          <p>你给它一段话，它预测<strong class="hl">下一个最可能出现的字</strong>是什么。</p>
+        </blockquote>
+
+        <p>就这么简单。一个字一个字接龙接出来的。</p>
+
+        <h3>它为什么能这样</h3>
+
+        <p>这就是大家最容易卡住的地方——"就接龙吗？那它怎么会写代码、会讲笑话、会做 PPT 大纲？"</p>
+
+        <p>它能这样，是因为它接的不是普通的龙，是<strong>在几乎全人类的公开文本里训练过的接龙</strong>。</p>
+
+        <p>简单说三件事：</p>
+
+        <ol>
+          <li><strong>预训练</strong>：它把互联网上能拿到的几乎所有文本——书、论文、新闻、代码、维基、问答——全部读了一遍。读的过程不是"理解"，是反复练习"猜下一个字"。猜对就奖励，猜错就调整那几千亿个数字里的一部分。这一步它学会的是<strong>世界的统计规律</strong>：什么样的话后面接什么样的话。</li>
+          <li><strong>对齐训练</strong>：光会接龙还不行，会接成一个胡言乱语的接龙怪。所以训练的人雇了一批人，给它示范"什么是好的回答 / 什么是坏的回答"，再用人的反馈微调它的行为。这一步让它<strong>听得懂人话</strong>，知道"你问问题的时候它要回答你"，而不是接着你的话往下编。</li>
+          <li><strong>越大越聪明</strong>：参数从几亿涨到几千亿之后，会出现一个反直觉的现象——它<strong>自己长出</strong>没人教过它的能力，比如一步一步推理、做数学题、写代码。这个现象业内叫"涌现"，目前没有完美的解释，但所有大模型公司都在朝同一个方向赌：堆更多数据、更多算力、更大的模型。</li>
+        </ol>
+
+        <p>一句话总结：</p>
+
+        <blockquote>
+          <p><strong class="hl">大模型 = 一个被全人类文本喂大的、会接龙的超大文件。</strong></p>
+        </blockquote>
+
+        <p>它本身不联网、不记得你、不会主动干活。就是一个文件。</p>
+
+        <hr>
+
+        <h2 id="layer-2">第二层：Chatbot（对话机器人）</h2>
+
+        <h3>它是什么</h3>
+
+        <p>豆包、ChatGPT、DeepSeek 网页版——这些都是 <strong>Chatbot</strong>。中文叫"对话机器人"。下次你在任何文章里看到 "chatbot" 这个词，知道它说的就是这一类产品。</p>
+
+        <p>Chatbot = <strong>大模型</strong> + <strong>一个聊天界面</strong> + <strong>一点点把你说的话喂给模型的逻辑</strong>。</p>
+
+        <p>你打字，它把你说的话送进大模型，大模型一个字一个字接龙出回答，再把字一个一个推到屏幕上。</p>
+
+        <p>就这样。</p>
+
+        <h3>它为什么能"记得"你前面说了什么</h3>
+
+        <p>这是一个特别值得讲清楚的点。因为大模型本身<strong>没有记忆</strong>。它每一次回答都是从零开始的。</p>
+
+        <p>那 Chatbot 为什么能接住你前面说过的话？</p>
+
+        <p>因为 Chatbot 这一层做了一个很笨但很有效的事：<strong class="hl">每次你发送消息的时候，它把你们前面所有的对话历史，连同你这次的新问题，一起重新塞给大模型</strong>。</p>
+
+        <p>大模型每次都"读完前情提要再回答"。它不是记得你，是每次都被<strong>重新告知</strong>一遍你是谁、你前面说了什么。</p>
+
+        <p>这也解释了几件事：</p>
+
+        <ul>
+          <li>为什么聊太久会越来越慢、越来越不准——前情提要太长，模型读不动了。</li>
+          <li>为什么开新对话它就完全不认识你了——历史没塞给它。</li>
+          <li>为什么有些产品有"记忆"功能——是产品端帮你存了一份摘要，每次悄悄塞进前情提要里。</li>
+        </ul>
+
+        <blockquote>
+          <p><strong>Chatbot 就是给大模型套了一个"对话外壳"，让它看起来像在和你聊天。</strong></p>
+        </blockquote>
+
+        <hr>
+
+        <h2 id="layer-3">第三层：Workflow（流程编排）</h2>
+
+        <h3>它是什么</h3>
+
+        <p><strong>Workflow</strong> 中文叫"流程编排"。意思是：<strong>把大模型当成流水线上的一个工人，让它固定做某一步活</strong>。</p>
+
+        <p>比如客服自动回复的 Workflow：</p>
+
+<pre><code>用户消息 → 关键词识别 → 调用模型生成回复 → 发回给用户</code></pre>
+
+        <p>或者文案自动生成的 Workflow：</p>
+
+<pre><code>读 brief → 调模型生成五个标题 → 调模型给每个标题写一段正文 → 输出表格</code></pre>
+
+        <p>每一步该干什么，<strong>是人提前画好的</strong>。模型只是流程图里的一个节点。</p>
+
+        <p>国内你可能听过的 Coze、Dify、字节扣子、阿里百炼，还有飞书的智能伙伴——这些大体上都属于 Workflow 这一层。</p>
+
+        <h3>它为什么能跑起来</h3>
+
+        <p>它能跑起来不是因为模型变聪明了，是因为<strong>人把流程拆得足够细</strong>，每一步只让模型干一个它干得动的小活。</p>
+
+        <p>这也是 Workflow 的优点和缺点：</p>
+
+        <ul>
+          <li><strong>优点</strong>：稳定、可控、好排错。每一步在哪儿断了都能查得出来。</li>
+          <li><strong>缺点</strong>：<strong class="hl">它不会自己思考</strong>。流程图画错了、走到一个画图的人没想到的分支，它就傻在那儿了。</li>
+        </ul>
+
+        <p>你可以把 Workflow 理解成：<strong>一个预先设计好动线的工厂</strong>。模型是工人，流程图是动线。你换一个新订单，工厂未必能干。</p>
+
+        <hr>
+
+        <h2 id="layer-4">第四层：Agent（能自己干活的代理人）</h2>
+
+        <h3>它是什么</h3>
+
+        <p>这一层是最近一两年 AI 行业真正的<strong>主战场</strong>。也是 OpenClaw 所在的那一层。</p>
+
+        <p><strong>Agent</strong> 中文一般翻译成"代理人"或"智能体"。简单粗暴的定义就是：</p>
+
+        <blockquote>
+          <p><strong class="hl">Agent = 大模型 + 一双手脚（能调用 Tool）+ 一个循环（能自己决定下一步干什么）+ 一段记忆</strong></p>
+        </blockquote>
+
+        <p>Agent 跟 Workflow 最大的差别是：</p>
+
+        <ul>
+          <li><strong>Workflow</strong> 是<strong>人画好图</strong>，模型按图走。</li>
+          <li><strong>Agent</strong> 是<strong>给模型一个目标</strong>，让它<strong>自己决定</strong>要走哪几步。</li>
+        </ul>
+
+        <p>举个对比：</p>
+
+        <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Workflow</th>
+              <th>Agent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>输入</strong></td>
+              <td>一个固定的输入格式</td>
+              <td>一个目标，比如"帮我把这周的微博舆情整理成一份给客户的简报"</td>
+            </tr>
+            <tr>
+              <td><strong>步骤</strong></td>
+              <td>人提前画好</td>
+              <td>AI 自己边想边决定</td>
+            </tr>
+            <tr>
+              <td><strong>工具</strong></td>
+              <td>在流程图节点里固定调</td>
+              <td>AI 看情况决定要不要调、调哪个</td>
+            </tr>
+            <tr>
+              <td><strong>出问题</strong></td>
+              <td>流程断在哪一步</td>
+              <td>AI 自己尝试换一个方法</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>它为什么能自己干活</h3>
+
+        <p>这是今天最值得停下来讲清楚的一段。</p>
+
+        <p>它能"自己干活"，靠的是三件事的拼装：</p>
+
+        <p><strong>第一件：工具调用（手脚）</strong></p>
+
+        <p>光有大模型，它只会输出文字。但人们发现一件事——<strong>你可以让大模型输出一段"调用指令"</strong>，比如"我想用浏览器打开这个网址"，然后<strong>外面的程序</strong>真的去帮它打开浏览器，再把结果塞回前情提要给模型看。</p>
+
+        <p>这一下，模型就有手有脚了。它能上网、能读写文件、能发消息、能跑代码。</p>
+
+        <p><strong>第二件：观察—思考—行动—再观察的循环</strong></p>
+
+        <p>模型每次行动完，会被告知"刚才那个动作的结果是什么"。然后它<strong>再决定下一步</strong>。这个过程长这样：</p>
+
+        <div class="loop-diagram">
+          <div class="loop-track">
+            <div class="loop-node">
+              <div class="loop-num">1</div>
+              <div class="loop-name">思考</div>
+              <div class="loop-detail">下一步该做什么</div>
+            </div>
+            <div class="loop-arrow">→</div>
+            <div class="loop-node">
+              <div class="loop-num">2</div>
+              <div class="loop-name">行动</div>
+              <div class="loop-detail">调用一个 Tool</div>
+            </div>
+            <div class="loop-arrow">→</div>
+            <div class="loop-node">
+              <div class="loop-num">3</div>
+              <div class="loop-name">观察</div>
+              <div class="loop-detail">看看结果是什么</div>
+            </div>
+          </div>
+          <div class="loop-back">↻ 回到第 1 步，直到目标达成才停下来</div>
+        </div>
+
+        <p>举个例子，你给它一个目标"帮我查一下半固态电池行业现在头部三家是谁"：</p>
+
+        <ol>
+          <li><strong>思考</strong>：我得搜一下"半固态电池 头部企业"。</li>
+          <li><strong>行动</strong>：调用浏览器，搜这个关键词。</li>
+          <li><strong>观察</strong>：搜出来一堆链接，前几条是新闻和行研报告。</li>
+          <li><strong>思考</strong>：行研报告更靠谱，我点开第二条。</li>
+          <li><strong>行动</strong>：调用浏览器读取第二条的正文。</li>
+          <li><strong>观察</strong>：里面提到了五家公司。</li>
+          <li><strong>思考</strong>：但我需要的是"头部三家"，再交叉验证一下其它来源。</li>
+          <li>……</li>
+        </ol>
+
+        <p>这个循环它会自己跑十几步、几十步，直到它觉得问题答完了，才停下来给你回答。</p>
+
+        <p><strong>第三件：磁盘上的 markdown 文件（记忆）</strong></p>
+
+        <p>这是今天最反教科书、但也最值得你记住的一段。</p>
+
+        <p>市面上讲 Agent 的文章一般会告诉你："Agent 有短期记忆和长期记忆。" 这句话不能算错，但<strong>没有解释任何事</strong>。</p>
+
+        <p>真实情况是这样的：</p>
+
+        <blockquote>
+          <p><strong class="hl">Agent 的"记忆"，本质上就是存在你电脑里的一堆 markdown 文件。</strong></p>
+        </blockquote>
+
+        <p>模型本身没有记忆——它就是第一层里那个"会接龙的超大文件"，每次被调用都是从零开始的。它之所以"记得你"，是因为<strong>外面那层程序每次跟它说话之前，都会自动打开几个 markdown 文件、把里面的内容塞进前情提要给它看</strong>。</p>
+
+        <p>OpenClaw 官网的原话说得最直接：</p>
+
+        <blockquote>
+          <p><strong>"The model only 'remembers' what gets saved to disk — there is no hidden state."</strong></p>
+          <p>模型只记得那些被写进磁盘的东西——没有任何隐藏的记忆。</p>
+        </blockquote>
+
+        <p>这些文件就躺在 <code>~/.openclaw/workspace/</code> 下面，一共就这么几个：</p>
+
+        <ul>
+          <li><strong><code>MEMORY.md</code></strong>——<strong>长期记忆</strong>。你告诉过它的那些"持久"的事——偏好、决定、硬事实。每次一开对话就被<strong>自动读进去</strong>。</li>
+          <li><strong><code>memory/2026-04-10.md</code></strong>（每天一份）——<strong>当天的日志</strong>。<strong>今天和昨天</strong>这两份会被自动读进来，作为近期的上下文。</li>
+          <li><strong><code>DREAMS.md</code></strong>（实验中）——<strong>"做梦"机制</strong>写下来的沉淀。OpenClaw 会定期"做梦"：把日志里值得长期记住的东西<strong>自动提炼</strong>写进 <code>MEMORY.md</code>，把没价值的丢掉。这让长期记忆不会越滚越肥。</li>
+        </ul>
+
+        <p>"做梦"听着玄，其实是一个非常聪明的工程设计——<strong>让 AI 自己定期整理自己的记忆，从"今天发生了什么"里沉淀出"这件事值得我长期记住"</strong>。</p>
+
+        <p>这才是这一段的关键：</p>
+
+        <blockquote>
+          <p><strong>Agent 的"记忆"——不在某家 SaaS 公司的服务器里，不是黑盒，也不是什么神秘的"向量数据库"。就是你自己电脑里的几个 markdown 文件。打开能读，不爽能改，备份就是复制，删除就是扔进回收站。</strong></p>
+        </blockquote>
+
+        <p>这也是 OpenClaw 这类 Agent <strong>最反 SaaS</strong> 的地方——你跟它说过的所有话、它学过的所有东西、它的"成长轨迹"，<strong>全部在你自己的工作区里，看得见、改得动、搬得走</strong>。</p>
+
+        <h3>三件事拼起来</h3>
+
+        <p>有了这三件事——<strong>会用的手脚、能自己跑的循环、写在磁盘上的 markdown 记忆</strong>——模型就从"会接龙的文件"变成了一个<strong>能自己干活的代理人</strong>：</p>
+
+        <div class="formula">
+          <div class="formula-item">
+            <div class="formula-label">手脚</div>
+            <div class="formula-term">Tool</div>
+          </div>
+          <div class="formula-op">+</div>
+          <div class="formula-item">
+            <div class="formula-label">循环</div>
+            <div class="formula-term">Loop</div>
+          </div>
+          <div class="formula-op">+</div>
+          <div class="formula-item">
+            <div class="formula-label">记忆</div>
+            <div class="formula-term">Memory (md)</div>
+          </div>
+          <div class="formula-op">=</div>
+          <div class="formula-result">
+            <div class="formula-label">Agent</div>
+            <div class="formula-term">代理人</div>
+          </div>
+        </div>
+
+        <h3>这一层目前能干到什么程度</h3>
+
+        <p>我自己用 OpenClaw 跑过的真实任务里，它已经能：</p>
+
+        <ul>
+          <li>自己上网搜资料、读完十几篇内容、整理成一份带引用的简报</li>
+          <li>自己读一份很长的 PDF，按我给的框架抽信息进 markdown 表格</li>
+          <li>自己拆我们公司一个真实 brief，按我教过它的方法给出第一版策略草案</li>
+          <li>自己审一篇内容稿，对照我设定的红线挑问题</li>
+        </ul>
+
+        <p>这些事情<strong>没有任何一步是我手动操作的</strong>。我只是给它一个目标，它自己跑。</p>
+
+        <p>但它也不是万能的。它会犯错、会绕远、有时候会卡住。这也是为什么需要"教养"——后面会展开讲怎么教它。</p>
+
+        <hr>
+
+        <h2 id="layer-5">第五层：垂直工具</h2>
+
+        <h3>它是什么</h3>
+
+        <p>垂直工具就是把上面四层任何一层，<strong>包装成一个面向特定场景的产品</strong>。</p>
+
+        <p>营销人最熟的：</p>
+
+        <ul>
+          <li>妙鸭、Midjourney、即梦——图像生成</li>
+          <li>Runway、Sora、可灵——视频生成</li>
+          <li>Notion AI、Gamma、Tome——文档/PPT</li>
+          <li>Cursor、Windsurf、Trae——写代码</li>
+          <li>11Labs、海螺——语音克隆</li>
+        </ul>
+
+        <p>这一层不需要你理解里面的技术，你只需要知道一件事：</p>
+
+        <blockquote>
+          <p><strong>它们好不好用，主要看两件事——里面用的大模型够不够强、外面套的产品交互够不够贴你的场景。</strong></p>
+        </blockquote>
+
+        <p>里层弱，外层再贴心也没用；里层强，外层不贴你的场景，你也用不顺手。</p>
+
+        <hr>
+
+        <h2 id="map-summary">五层地图小结</h2>
+
+        <div class="map-summary">
+          <div class="map-summary-title">从内核到产品</div>
+          <div class="layer-stack" style="margin: 0;">
+            <div class="layer-row" data-level="5">
+              <div class="layer-badge">L5</div>
+              <div class="layer-body">
+                <div class="layer-name">垂直工具</div>
+                <div class="layer-detail">把上面任何一层包装成一个特定场景的产品</div>
+              </div>
+            </div>
+            <div class="layer-row" data-level="4">
+              <div class="layer-badge">L4</div>
+              <div class="layer-body">
+                <div class="layer-name">Agent</div>
+                <div class="layer-detail">给模型手脚、循环、记忆，让它自己拆任务 — OpenClaw</div>
+              </div>
+            </div>
+            <div class="layer-row" data-level="3">
+              <div class="layer-badge">L3</div>
+              <div class="layer-body">
+                <div class="layer-name">Workflow</div>
+                <div class="layer-detail">把模型放进人画好的流程图 — Coze / Dify</div>
+              </div>
+            </div>
+            <div class="layer-row" data-level="2">
+              <div class="layer-badge">L2</div>
+              <div class="layer-body">
+                <div class="layer-name">Chatbot</div>
+                <div class="layer-detail">套了一个聊天外壳 — 豆包 / ChatGPT</div>
+              </div>
+            </div>
+            <div class="layer-row" data-level="1">
+              <div class="layer-badge">L1</div>
+              <div class="layer-body">
+                <div class="layer-name">大模型 / LLM</div>
+                <div class="layer-detail">一个会接龙的超大文件</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>以后看到任何一个新的 AI 产品，先在这五层里找它的位置——属于哪一层，决定了它能帮你到什么程度。</p>
+
+        <hr>
+
+        <h2 id="glossary">术语速查</h2>
+
+        <p>下次在文章、播客、朋友圈里撞见这些词，不用从零开始懵——你已经知道它在说什么了。</p>
+
+        <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>术语</th>
+              <th>人话翻译</th>
+              <th>在哪一层</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>LLM</strong></td>
+              <td>Large Language Model，大语言模型——就是那个会接龙的超大文件</td>
+              <td>L1</td>
+            </tr>
+            <tr>
+              <td><strong>参数 / Parameters</strong></td>
+              <td>模型文件里的数字，几千亿个。参数越多，模型越大，通常越聪明</td>
+              <td>L1</td>
+            </tr>
+            <tr>
+              <td><strong>Token</strong></td>
+              <td>模型读写的最小单位。一个中文字 ≈ 1-2 个 token，一个英文单词 ≈ 1 个 token</td>
+              <td>L1</td>
+            </tr>
+            <tr>
+              <td><strong>Context Window</strong></td>
+              <td>上下文窗口——模型一次能"看到"多少内容。窗口越大，能读的前情提要越长</td>
+              <td>L1-L2</td>
+            </tr>
+            <tr>
+              <td><strong>Prompt</strong></td>
+              <td>你发给 AI 的那段话。写好 prompt = 把需求讲清楚</td>
+              <td>L2</td>
+            </tr>
+            <tr>
+              <td><strong>System Prompt</strong></td>
+              <td>系统提示词——产品提前塞给模型的"人设"，你通常看不到</td>
+              <td>L2-L3</td>
+            </tr>
+            <tr>
+              <td><strong>RAG</strong></td>
+              <td>Retrieval-Augmented Generation——先搜资料，再让模型基于搜到的内容回答。知识库类产品的核心原理</td>
+              <td>L3</td>
+            </tr>
+            <tr>
+              <td><strong>Hallucination</strong></td>
+              <td>幻觉——AI 一本正经地胡说八道。接龙接到没见过的地方就会编</td>
+              <td>L1-L2</td>
+            </tr>
+            <tr>
+              <td><strong>Fine-tuning</strong></td>
+              <td>微调——拿你自己的数据再训练一遍模型，让它更懂你的场景。成本高，一般人用不到</td>
+              <td>L1</td>
+            </tr>
+            <tr>
+              <td><strong>Tool Use / Function Calling</strong></td>
+              <td>工具调用——让模型输出"我想调这个工具"，外面的程序真的帮它调。Agent 的手脚</td>
+              <td>L4</td>
+            </tr>
+            <tr>
+              <td><strong>MCP</strong></td>
+              <td>Model Context Protocol——让 AI 连接外部工具的标准协议。类似"AI 世界的 USB 接口"</td>
+              <td>L4</td>
+            </tr>
+            <tr>
+              <td><strong>Vibe Coding</strong></td>
+              <td>氛围编程——不写代码，用嘴告诉 AI 你想要什么，它帮你写</td>
+              <td>L4-L5</td>
+            </tr>
+            <tr>
+              <td><strong>开源 / Open Source</strong></td>
+              <td>代码公开，谁都能看、能改、能用。意味着你的数据和成果归你自己</td>
+              <td>通用</td>
+            </tr>
+            <tr>
+              <td><strong>API</strong></td>
+              <td>Application Programming Interface——程序之间对话的接口。你用的产品背后都在调 API</td>
+              <td>通用</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
       </div>
 
-      <p>以后看到任何一个新的 AI 产品,先在这五层里找它的位置——属于哪一层,决定了它能帮你到什么程度。</p>
+      <footer class="page-footer">
+        <p>by Wendy.Zhang · 2026</p>
+      </footer>
 
-      <hr>
+    </article>
 
-      <h1 id="part-2">第二部分:学 AI 的三个笨办法</h1>
+  </div>
+</div>
 
-      <p>不是提示词模板,是工具层面的笨办法。回去就能用。</p>
+<!-- ============================================
+     TAB: OpenClaw
+     ============================================ -->
+<div class="tab-panel" id="tab-openclaw">
+  <div class="layout">
 
-      <h2 id="hack-1">笨办法一:看不懂的就截图问 AI</h2>
-
-      <p>很多人遇到看不懂的截图、表格、英文文档,第一反应是关掉。</p>
-
-      <p>更省事的做法是:<strong>截图,发给豆包/DeepSeek/ChatGPT,问它"这张图在说什么"</strong>。</p>
-
-      <p>它不只能识别图里的文字,还能解释图里的意思、表格在说啥、英文在写啥、报错在报啥。</p>
-
-      <p>不需要一开始就懂术语。把不懂的东西<strong>喂给它</strong>,再用听得懂的话<strong>问它一遍</strong>——十次里有八次能直接解决。</p>
-
-      <h2 id="hack-2">笨办法二:terminal(黑窗口)里报错,丢给 Cursor</h2>
-
-      <p>后面装 OpenClaw 的时候,你可能会需要在那个<strong>黑底白字的窗口</strong>里敲几个命令。这个窗口在 Mac 上叫"终端",在 Windows 上叫 PowerShell——以下都管它叫<strong>黑窗口</strong>。</p>
-
-      <p>黑窗口报错你会很慌,因为它不像微信会跳一个"出错了"的弹窗,它直接吐一长串英文给你。</p>
-
-      <p>最简单的处理方式:</p>
-
-      <blockquote>
-        <p><strong>打开 Cursor(一个免费的代码编辑器,<a href="https://cursor.com/" target="_blank" rel="noopener">cursor.com</a> 下载),把那段红字粘进它的 chat 框,问"这个错怎么解决"。</strong></p>
-      </blockquote>
-
-      <p>它会一步一步告诉你怎么改。你不用懂代码——你只需要会复制粘贴它给你的那行命令、回车、看下一步。</p>
-
-      <p><strong>Cursor 等于你的 AI 黑窗口翻译官。</strong> 装 OpenClaw 的过程中你会反复需要它。</p>
-
-      <h2 id="hack-3">笨办法三:永远多问一个问题</h2>
-
-      <p>这条最简单,也最反本能。</p>
-
-      <p>跟 AI 对话,<strong>你拿到的第一个答案,几乎从来不是最好的那个</strong>。第一个答案是它能给所有人的"平均水平答案"。</p>
-
-      <p>最有用的一个动作是:拿到回答之后,不要关掉,<strong>再问一个问题</strong>。比如:</p>
-
-      <ul>
-        <li>"这里面有没有什么是你不太确定的"</li>
-        <li>"如果我面对的是一个 [我的真实场景],前面的答案要怎么改"</li>
-        <li>"你觉得这个答案有没有什么坑"</li>
-        <li>"再换一个比方讲一遍"</li>
+    <aside class="sidebar">
+      <div class="sidebar-toc-label">目录</div>
+      <ul class="sidebar-toc">
+        <li>
+          <a class="part-link" href="#oc-what">A. 是什么 / 为什么是它</a>
+        </li>
+        <li>
+          <a class="part-link" href="#oc-install">B. 一分钟装好</a>
+        </li>
+        <li>
+          <a class="part-link" href="#oc-tool">C. Tool — 它能干哪些活</a>
+        </li>
+        <li>
+          <a class="part-link" href="#oc-skill">D. 教养 — 给它写 Skill</a>
+          <ul class="sub-list">
+            <li><a class="sub-link" href="#oc-cases">D-2. 真实案例</a></li>
+          </ul>
+        </li>
+        <li>
+          <a class="part-link" href="#oc-multi">E. 多只虾的部署</a>
+        </li>
+        <li>
+          <a class="part-link" href="#oc-resources">F. 资源清单</a>
+        </li>
       </ul>
+    </aside>
 
-      <p>第二个问题往后,你才进入了 AI 真正能帮上你的那一层。</p>
+    <article class="page">
 
-      <blockquote>
-        <p><strong class="hl">AI 的差距,常常不是在第一个问题,而是在第二个问题。</strong></p>
-      </blockquote>
+      <header class="page-header">
+        <div class="page-icon">🦞</div>
+        <h1 class="page-title">上手 OpenClaw</h1>
+        <p class="page-subtitle">从认识到装好到教养</p>
+      </header>
 
-      <hr>
+      <div class="page-body">
 
-      <h1 id="part-3">第三部分:上手 OpenClaw——从认识到装好到教养</h1>
+        <h2 id="oc-what">A. OpenClaw 是什么？为什么是它？</h2>
 
-      <h2 id="oc-what">A. OpenClaw 是什么?为什么是它?</h2>
+        <h3>它是什么</h3>
 
-      <h3>它是什么</h3>
+        <p><strong>OpenClaw 就是一只 Agent</strong>——第四层讲的那种"能自己干活的代理人"。</p>
 
-      <p><strong>OpenClaw 就是一只 Agent</strong>——第四层讲的那种"能自己干活的代理人"。</p>
+        <p>它的作者是一个国外的开发者 Peter Steinberger，他之前做过一个叫 PSPDFKit 的产品。OpenClaw 是开源的，吉祥物是一只叫 Molty 的太空小龙虾。"Claw"就是"爪"，这也是为什么我管它叫"虾"——它确实是一只虾。</p>
 
-      <p>它的作者是一个国外的开发者 Peter Steinberger,他之前做过一个叫 PSPDFKit 的产品。OpenClaw 是开源的,吉祥物是一只叫 Molty 的太空小龙虾。"Claw"就是"爪",这也是为什么我管它叫"虾"——它确实是一只虾。</p>
+        <p>它的官方 slogan 是：</p>
 
-      <p>它的官方 slogan 是:</p>
+        <blockquote>
+          <p><strong>"The AI that actually does things."</strong></p>
+          <p>（那只真的会干活的 AI。）</p>
+        </blockquote>
 
-      <blockquote>
-        <p><strong>"The AI that actually does things."</strong></p>
-        <p>(那只真的会干活的 AI。)</p>
-      </blockquote>
+        <h3>它的内部结构（只要知道四层）</h3>
 
-      <h3>它的内部结构(只要知道四层)</h3>
+        <p>OpenClaw 内部有四层结构。不需要记技术名词，但知道这四层，后面"教养它"才有抓手：</p>
 
-      <p>OpenClaw 内部有四层结构。不需要记技术名词,但知道这四层,后面"教养它"才有抓手:</p>
-
-      <div class="arch-stack">
-        <div class="arch-layer">
-          <div class="arch-num">01</div>
-          <div class="arch-info">
-            <div class="arch-name">Gateway <span class="arch-zh">网关层</span></div>
-            <div class="arch-desc">前台接待 — 接你的指令、把它路由到合适的脑子和手脚</div>
+        <div class="arch-stack">
+          <div class="arch-layer">
+            <div class="arch-num">01</div>
+            <div class="arch-info">
+              <div class="arch-name">Gateway <span class="arch-zh">网关层</span></div>
+              <div class="arch-desc">前台接待 — 接你的指令、把它路由到合适的脑子和手脚</div>
+            </div>
+          </div>
+          <div class="arch-layer">
+            <div class="arch-num">02</div>
+            <div class="arch-info">
+              <div class="arch-name">Brain <span class="arch-zh">大脑</span></div>
+              <div class="arch-desc">接进来的大模型本身 — Claude / GPT / DeepSeek / Kimi / Qwen 任你换</div>
+            </div>
+          </div>
+          <div class="arch-layer">
+            <div class="arch-num">03</div>
+            <div class="arch-info">
+              <div class="arch-name">Tools <span class="arch-zh">手脚</span></div>
+              <div class="arch-desc">一组它能调用的具体能力 — 执行命令、读写文件、上网、发消息、跑代码</div>
+            </div>
+          </div>
+          <div class="arch-layer">
+            <div class="arch-num">04</div>
+            <div class="arch-info">
+              <div class="arch-name">Memory &amp; Workspace <span class="arch-zh">记忆与工作区</span></div>
+              <div class="arch-desc">长期记忆、Skill 文件、日志 — 全是 markdown，存在你自己的电脑上</div>
+            </div>
           </div>
         </div>
-        <div class="arch-layer">
-          <div class="arch-num">02</div>
-          <div class="arch-info">
-            <div class="arch-name">Brain <span class="arch-zh">大脑</span></div>
-            <div class="arch-desc">接进来的大模型本身 — Claude / GPT / DeepSeek / Kimi / Qwen 任你换</div>
-          </div>
-        </div>
-        <div class="arch-layer">
-          <div class="arch-num">03</div>
-          <div class="arch-info">
-            <div class="arch-name">Tools <span class="arch-zh">手脚</span></div>
-            <div class="arch-desc">一组它能调用的具体能力 — 执行命令、读写文件、上网、发消息、跑代码</div>
-          </div>
-        </div>
-        <div class="arch-layer">
-          <div class="arch-num">04</div>
-          <div class="arch-info">
-            <div class="arch-name">Memory &amp; Workspace <span class="arch-zh">记忆与工作区</span></div>
-            <div class="arch-desc">长期记忆、Skill 文件、日志 — 全是 markdown,存在你自己的电脑上</div>
-          </div>
-        </div>
-      </div>
 
-      <p>四层拼起来,就是一只能自己思考、自己动手、自己记住的 AI。其中第二层 <strong>Brain</strong> 不绑死任何一家——你可以随时换更聪明的脑子,这是 OpenClaw 最大的优点之一。</p>
+        <p>四层拼起来，就是一只能自己思考、自己动手、自己记住的 AI。其中第二层 <strong>Brain</strong> 不绑死任何一家——你可以随时换更聪明的脑子，这是 OpenClaw 最大的优点之一。</p>
 
-      <h3>为什么是它(而不是别的)</h3>
+        <h3>为什么是它（而不是别的）</h3>
 
-      <p>我用过国内国外好几个 Agent 类产品,最后落在 OpenClaw 上,因为它在三件事上都做到了:</p>
+        <p>我用过国内国外好几个 Agent 类产品，最后落在 OpenClaw 上，因为它在三件事上都做到了：</p>
 
-      <ol>
-        <li><strong>它真的能干活,不是 demo</strong>。我用它做的事情都是真的工作——拆 brief、审稿、做研究、归档信息——不是"看,它能给你写一首诗"。</li>
-        <li><strong>它是开源的</strong>。这一点对我们做营销的人很重要。开源意味着<strong>我教它的东西、我给它的数据、我让它干的活,都在我自己的电脑或者我们公司自己的环境里</strong>,不会变成一家公司的训练数据。</li>
-        <li><strong>它的"说明书"机制非常友好</strong>。后面会详细讲这一点——它让一个不会写代码的营销人,也能把自己的经验教给它。</li>
-      </ol>
+        <ol>
+          <li><strong>它真的能干活，不是 demo</strong>。我用它做的事情都是真的工作——拆 brief、审稿、做研究、归档信息——不是"看，它能给你写一首诗"。</li>
+          <li><strong>它是开源的</strong>。这一点对我们做营销的人很重要。开源意味着<strong>我教它的东西、我给它的数据、我让它干的活，都在我自己的电脑或者我们公司自己的环境里</strong>，不会变成一家公司的训练数据。</li>
+          <li><strong>它的"说明书"机制非常友好</strong>。后面会详细讲这一点——它让一个不会写代码的营销人，也能把自己的经验教给它。</li>
+        </ol>
 
-      <h2 id="oc-install">B. 一分钟装好 OpenClaw</h2>
+        <h2 id="oc-install">B. 一分钟装好 OpenClaw</h2>
 
-      <p>我第一次装 OpenClaw 是在 2026 年 3 月 5 号,那时候我腾空了一台 MacBook,按官方文档原生装在我的黑窗口里,整整折腾了好几个小时——要改一堆网络环境、装 Node.js、跑各种命令。</p>
+        <p>我第一次装 OpenClaw 是在 2026 年 3 月 5 号，那时候我腾空了一台 MacBook，按官方文档原生装在我的黑窗口里，整整折腾了好几个小时——要改一堆网络环境、装 Node.js、跑各种命令。</p>
 
-      <p>但现在不需要了。</p>
+        <p>但现在不需要了。</p>
 
-      <p>因为这一两个月,国内几家大厂都做了<strong>封装版的 OpenClaw</strong>。我这礼拜刚装了一只<strong>飞书版的虾</strong>——</p>
+        <p>因为这一两个月，国内几家大厂都做了<strong>封装版的 OpenClaw</strong>。我这礼拜刚装了一只<strong>飞书版的虾</strong>——</p>
 
-      <blockquote>
-        <p><strong>打开飞书 → 进官方插件市场 → 找 OpenClaw → 点安装 → 按提示授权 → 完成。</strong></p>
-        <p><strong>整个过程不到一分钟</strong>。</p>
-      </blockquote>
+        <blockquote>
+          <p><strong>打开飞书 → 进官方插件市场 → 找 OpenClaw → 点安装 → 按提示授权 → 完成。</strong></p>
+          <p><strong>整个过程不到一分钟</strong>。</p>
+        </blockquote>
 
-      <p>一分钟之后,你的飞书里就多了一个机器人,@它说话,它就开始干活。所有黑窗口、Node.js、网络配置、API key 配置——<strong>全部被飞书帮你处理掉了</strong>。</p>
+        <p>一分钟之后，你的飞书里就多了一个机器人，@它说话，它就开始干活。所有黑窗口、Node.js、网络配置、API key 配置——<strong>全部被飞书帮你处理掉了</strong>。</p>
 
-      <p>装好之后的第一句话可以是:"你好,介绍一下你自己。" 它会用自己的口吻回你——这一步用来确认它已经活了。</p>
+        <p>装好之后的第一句话可以是："你好，介绍一下你自己。" 它会用自己的口吻回你——这一步用来确认它已经活了。</p>
 
-      <h3>如果你想装原生版(不推荐新手)</h3>
+        <h3>如果你想装原生版（不推荐新手）</h3>
 
-      <p>如果你以后想跑更复杂的活、想完全在自己的电脑上跑、不想依赖飞书,那就装原生版。装的过程现在比 3 月份简单多了,但还是会用到黑窗口。</p>
+        <p>如果你以后想跑更复杂的活、想完全在自己的电脑上跑、不想依赖飞书，那就装原生版。装的过程现在比 3 月份简单多了，但还是会用到黑窗口。</p>
 
-      <p>官方安装命令一行:</p>
+        <p>官方安装命令一行：</p>
 
-      <ul>
-        <li>macOS / Linux:<code>curl -fsSL https://openclaw.ai/install.sh | bash</code></li>
-        <li>Windows PowerShell:<code>iwr -useb https://openclaw.ai/install.ps1 | iex</code></li>
-      </ul>
+        <ul>
+          <li>macOS / Linux：<code>curl -fsSL https://openclaw.ai/install.sh | bash</code></li>
+          <li>Windows PowerShell：<code>iwr -useb https://openclaw.ai/install.ps1 | iex</code></li>
+        </ul>
 
-      <p>装好之后跑一句 <code>openclaw onboard --install-daemon</code>,再跑 <code>openclaw dashboard</code> 就能在浏览器看到它的控制台。</p>
+        <p>装好之后跑一句 <code>openclaw onboard --install-daemon</code>，再跑 <code>openclaw dashboard</code> 就能在浏览器看到它的控制台。</p>
 
-      <blockquote>
-        <p><strong>新手强烈建议先用飞书版</strong>。等你觉得不够用了再装原生。</p>
-      </blockquote>
+        <blockquote>
+          <p><strong>新手强烈建议先用飞书版</strong>。等你觉得不够用了再装原生。</p>
+        </blockquote>
 
-      <h2 id="oc-tool">C. OpenClaw 的 Tool——它能干哪些活</h2>
+        <h2 id="oc-tool">C. OpenClaw 的 Tool——它能干哪些活</h2>
 
-      <p>OpenClaw 自带一组 <strong>Tool</strong>(中文翻译"工具";也可以把它想象成虾的"手脚"——但官方文档和 Agent 圈里的正式叫法就是 Tool)。常用的几类:</p>
+        <p>OpenClaw 自带一组 <strong>Tool</strong>（中文翻译"工具"；也可以把它想象成虾的"手脚"——但官方文档和 Agent 圈里的正式叫法就是 Tool）。常用的几类：</p>
 
-      <ol>
-        <li><strong><code>exec</code></strong>——执行命令。能跑黑窗口里的命令,比如下载、安装、跑脚本。</li>
-        <li><strong><code>read / write</code></strong>——读写文件。能读你电脑里的文件、能新建/修改文件。</li>
-        <li><strong><code>browser</code></strong>——打开浏览器。能上网、搜东西、读网页。</li>
-        <li><strong><code>code execution</code></strong>——跑代码。能在一个安全的小盒子里跑一段代码(比如帮你算一个表格)。</li>
-        <li><strong>发消息</strong>——在飞书版里,它可以直接发飞书消息、贴图、回复你。</li>
-        <li><strong>……还有更多</strong>。完整 Tool 列表见 <a href="https://docs.openclaw.ai/tools" target="_blank" rel="noopener">docs.openclaw.ai/tools</a>,但你不需要背。</li>
-      </ol>
+        <ol>
+          <li><strong><code>exec</code></strong>——执行命令。能跑黑窗口里的命令，比如下载、安装、跑脚本。</li>
+          <li><strong><code>read / write</code></strong>——读写文件。能读你电脑里的文件、能新建/修改文件。</li>
+          <li><strong><code>browser</code></strong>——打开浏览器。能上网、搜东西、读网页。</li>
+          <li><strong><code>code execution</code></strong>——跑代码。能在一个安全的小盒子里跑一段代码（比如帮你算一个表格）。</li>
+          <li><strong>发消息</strong>——在飞书版里，它可以直接发飞书消息、贴图、回复你。</li>
+          <li><strong>……还有更多</strong>。完整 Tool 列表见 <a href="https://docs.openclaw.ai/tools" target="_blank" rel="noopener">docs.openclaw.ai/tools</a>，但你不需要背。</li>
+        </ol>
 
-      <p>OpenClaw 还有一个 <strong>permission profile(权限档位)</strong> 机制——你可以设这一只虾<strong>能用哪些 Tool</strong>。比如只让它做内容工作,就只开 <code>read/write</code> + <code>browser</code>,不开 <code>exec</code>。这样它就算被你教错了,也搞不出大事。</p>
+        <p>OpenClaw 还有一个 <strong>permission profile（权限档位）</strong> 机制——你可以设这一只虾<strong>能用哪些 Tool</strong>。比如只让它做内容工作，就只开 <code>read/write</code> + <code>browser</code>，不开 <code>exec</code>。这样它就算被你教错了，也搞不出大事。</p>
 
-      <p>档位有四档:<code>minimal</code> / <code>messaging</code> / <code>coding</code> / <code>full</code>。前两档很安全,后两档威力大但你得清楚自己在干嘛。</p>
+        <p>档位有四档：<code>minimal</code> / <code>messaging</code> / <code>coding</code> / <code>full</code>。前两档很安全，后两档威力大但你得清楚自己在干嘛。</p>
 
-      <h2 id="oc-skill">D. 教养 OpenClaw——它真正变成"你的虾"的关键</h2>
+        <h2 id="oc-skill">D. 教养 OpenClaw——它真正变成"你的虾"的关键</h2>
 
-      <p>这是 OpenClaw 最重要的一层,也是它和别的 AI 产品<strong>真正拉开差距</strong>的地方。</p>
+        <p>这是 OpenClaw 最重要的一层，也是它和别的 AI 产品<strong>真正拉开差距</strong>的地方。</p>
 
-      <h3>教养 = 给它写 Skill</h3>
+        <h3>教养 = 给它写 Skill</h3>
 
-      <p>OpenClaw 里有一个核心概念叫 <strong>Skill</strong>——你可以把它想象成"写给虾的一份说明书",这是它在你脑子里的形象。但<strong>它的正式名字就是 Skill</strong>,下次你在 OpenClaw 文档里、在别的 Agent 产品里看到 "skill" 这个词,记住它说的就是这个东西。</p>
+        <p>OpenClaw 里有一个核心概念叫 <strong>Skill</strong>——你可以把它想象成"写给虾的一份说明书"，这是它在你脑子里的形象。但<strong>它的正式名字就是 Skill</strong>，下次你在 OpenClaw 文档里、在别的 Agent 产品里看到 "skill" 这个词，记住它说的就是这个东西。</p>
 
-      <p>一个 Skill 就是一个 markdown 文件,文件名固定叫 <code>SKILL.md</code>,里面长这样:</p>
+        <p>一个 Skill 就是一个 markdown 文件，文件名固定叫 <code>SKILL.md</code>，里面长这样：</p>
 
 <pre><code>---
 name: hello_world
@@ -1520,31 +2213,34 @@ description: 一个简单的打招呼技能。
 
 # Hello World Skill
 
-当用户让你打招呼的时候,用 echo 这个 Tool 说一句
+当用户让你打招呼的时候，用 echo 这个 Tool 说一句
 "Hello from your custom skill!"。</code></pre>
 
-      <p>就这么简单。</p>
+        <p>就这么简单。</p>
 
-      <ul>
-        <li>上面那段 <code>--- name / description ---</code> 是给虾看的"目录"——它知道自己有这么一个 Skill、这个 Skill 是干嘛用的。</li>
-        <li>下面的正文是 Skill 的<strong>内容</strong>:你想让它在什么场景下、按什么步骤、用什么语气、调用哪些 Tool——<strong>全部用大白话写下来就行</strong>。</li>
-      </ul>
+        <ul>
+          <li>上面那段 <code>--- name / description ---</code> 是给虾看的"目录"——它知道自己有这么一个 Skill、这个 Skill 是干嘛用的。</li>
+          <li>下面的正文是 Skill 的<strong>内容</strong>：你想让它在什么场景下、按什么步骤、用什么语气、调用哪些 Tool——<strong>全部用大白话写下来就行</strong>。</li>
+        </ul>
 
-      <p><strong>关键的一句话</strong>:</p>
+        <p><strong>关键的一句话</strong>：</p>
 
-      <blockquote>
-        <p><strong class="hl">写 <code>SKILL.md</code> 不是写代码,是写"工作 SOP"。</strong></p>
-        <p><strong>你给一个新人入职的工作交接文档,长什么样,<code>SKILL.md</code> 就长什么样。</strong></p>
-      </blockquote>
+        <blockquote>
+          <p><strong class="hl">写 <code>SKILL.md</code> 不是写代码，是写"工作 SOP"。</strong></p>
+          <p><strong>你给一个新人入职的工作交接文档，长什么样，<code>SKILL.md</code> 就长什么样。</strong></p>
+        </blockquote>
 
-      <p>这就是 OpenClaw 对营销人最友好的地方——<strong>写 SOP 是营销人的看家本领</strong>。</p>
+        <p>这就是 OpenClaw 对营销人最友好的地方——<strong>写 SOP 是营销人的看家本领</strong>。</p>
 
-      <h3>说明书放在哪儿——顺便把整只虾的大脑长什么样给你看</h3>
+        <h3>说明书放在哪儿——顺便把整只虾的大脑长什么样给你看</h3>
 
-      <p>写好的 <code>SKILL.md</code> 放进 <code>~/.openclaw/workspace/skills/</code> 下。但与其只告诉你这一条路径,我更想把<strong>整只虾的大脑</strong>摊开给你看一眼:</p>
+        <p>写好的 <code>SKILL.md</code> 放进 <code>~/.openclaw/workspace/skills/</code> 下。但与其只告诉你这一条路径，我更想把<strong>整只虾的大脑</strong>摊开给你看一眼：</p>
 
 <pre><code>~/.openclaw/workspace/
-├── MEMORY.md                ← 长期记忆(第一部分讲过的那个)
+├── AGENT.md                 ← 这只虾是谁（名字、选用的模型、权限档位）
+├── SOUL.md                  ← 这只虾的"灵魂"（语气、人设、行事风格）
+├── USER.md                  ← 你是谁（让它认识主人——偏好、身份、工作背景）
+├── MEMORY.md                ← 长期记忆（前面讲过的那个）
 ├── memory/
 │   ├── 2026-04-10.md        ← 今天的日志
 │   ├── 2026-04-09.md        ← 昨天的日志
@@ -1558,173 +2254,820 @@ description: 一个简单的打招呼技能。
     └── &lt;你新写的技能&gt;/
         └── SKILL.md</code></pre>
 
-      <p>(<code>~</code> 在 Mac 上是你的用户文件夹,在 Windows 上是 <code>C:\Users\你的用户名</code>。)</p>
+        <p>（<code>~</code> 在 Mac 上是你的用户文件夹，在 Windows 上是 <code>C:\Users\你的用户名</code>。）</p>
 
-      <p><strong>一只虾的全部大脑,就是这么一个文件夹</strong>。没有神秘的数据库,没有云端黑盒,没有 SaaS 后台——<strong>全部是看得懂、改得动、备份得走的 markdown 文件</strong>。</p>
+        <p>分成三组来看：</p>
 
-      <p>这张图是整场分享里最重要的一张:</p>
+        <ul>
+          <li><strong>身份组</strong>（<code>AGENT.md</code> / <code>SOUL.md</code> / <code>USER.md</code>）——回答三件事：<strong>它是谁</strong>、<strong>它是什么性格</strong>、<strong>你是谁</strong>。这一组决定了它"像不像"你想要的那只虾。</li>
+          <li><strong>记忆组</strong>（<code>MEMORY.md</code> / <code>memory/</code> / <code>DREAMS.md</code>）——回答一件事：<strong>它记得什么</strong>。长期记忆 + 每日日志 + 做梦沉淀。</li>
+          <li><strong>技能组</strong>（<code>skills/</code>）——回答一件事：<strong>它会干什么</strong>。你写给它的每一份 SOP。</li>
+        </ul>
 
-      <blockquote>
-        <p><strong><code>skills/</code> 是你教给它的 SOP;<code>MEMORY.md</code> 是它对你的持续认识;<code>memory/YYYY-MM-DD.md</code> 是它每天的工作日志;<code>DREAMS.md</code> 是它自己整理出来的沉淀。</strong></p>
-        <p><strong>这几个文件加起来,就是一只你自己养出来的数字同事的全部。</strong></p>
-      </blockquote>
+        <p><strong>一只虾的全部大脑，就是这么一个文件夹</strong>。没有神秘的数据库，没有云端黑盒，没有 SaaS 后台——<strong>全部是看得懂、改得动、备份得走的 markdown 文件</strong>。</p>
 
-      <p>新写好的 <code>SKILL.md</code> 放进 <code>skills/&lt;你的技能名&gt;/SKILL.md</code> 之后,跟你的虾说一句"重新加载一下技能",或者重启它一下,它就读到了。之后只要你触发了这个 skill 描述里说的场景,它就<strong>自动</strong>按你说明书里的步骤干活。你不用每次都把 SOP 复制粘贴给它。</p>
+        <p>这张图是整场分享里最重要的一张：</p>
 
-      <h3>Tool / Skill / Plugin 的关系(一句话讲清楚)</h3>
+        <blockquote>
+          <p><strong>身份组告诉它"自己是谁、你是谁"；记忆组让它"记得你们一起做过什么"；技能组是你教它的 SOP。</strong></p>
+          <p><strong>这几个文件加起来，就是一只你自己养出来的数字同事的全部。</strong></p>
+        </blockquote>
 
-      <p>这三个词新手最容易搞混。一句话理清它们的层级关系:</p>
+        <p>新写好的 <code>SKILL.md</code> 放进 <code>skills/&lt;你的技能名&gt;/SKILL.md</code> 之后，跟你的虾说一句"重新加载一下技能"，或者重启它一下，它就读到了。之后只要你触发了这个 skill 描述里说的场景，它就<strong>自动</strong>按你说明书里的步骤干活。你不用每次都把 SOP 复制粘贴给它。</p>
 
-      <div class="nest-diagram">
-        <div class="nest-layer nest-plugin">
-          <div class="nest-label">Plugin</div>
-          <div class="nest-sub">打包礼盒 — 把几个 Skill 打包送同事</div>
-          <div class="nest-layer nest-skill">
-            <div class="nest-label">Skill</div>
-            <div class="nest-sub">你教它的 SOP — SKILL.md</div>
-            <div class="nest-layer nest-tool">
-              <div class="nest-label">Tool</div>
-              <div class="nest-sub">它生下来就有的手脚</div>
+        <h3>Tool / Skill / Plugin 的关系（一句话讲清楚）</h3>
+
+        <p>这三个词新手最容易搞混。一句话理清它们的层级关系：</p>
+
+        <div class="nest-diagram">
+          <div class="nest-layer nest-plugin">
+            <div class="nest-label">Plugin</div>
+            <div class="nest-sub">打包礼盒 — 把几个 Skill 打包送同事</div>
+            <div class="nest-layer nest-skill">
+              <div class="nest-label">Skill</div>
+              <div class="nest-sub">你教它的 SOP — SKILL.md</div>
+              <div class="nest-layer nest-tool">
+                <div class="nest-label">Tool</div>
+                <div class="nest-sub">它生下来就有的手脚</div>
+              </div>
             </div>
           </div>
         </div>
+
+        <ul>
+          <li><strong>Tool</strong>：具体的某个动作能力，比如"打开浏览器"。<strong>OpenClaw 自带的，是它的"手脚"</strong>。</li>
+          <li><strong>Skill</strong>：你写给虾的一份 SOP，<strong>告诉它在什么场景下、怎么用这些 Tool</strong>。是你"教"它的"说明书"。</li>
+          <li><strong>Plugin</strong>：把几个相关的 Skill <strong>打包成一个安装包</strong>，方便分享给别人。是教完之后的"打包礼盒"。</li>
+        </ul>
+
+        <p>你可以这么记：</p>
+
+        <blockquote>
+          <p><strong class="hl">Tool 是它生下来就有的；Skill 是你教它的；Plugin 是你教完之后打包送给同事的。</strong></p>
+        </blockquote>
+
+        <h2 id="oc-cases">D-2. 真实案例：我自己教给虾的两个 Skill</h2>
+
+        <p>两个我<strong>真的在用</strong>的 Skill。</p>
+
+        <p>我的虾（也就是 ICC 那只服务公司的策略 + 审稿 BoT）目前长着两个核心 Skill：</p>
+
+        <h3>Skill 一：策略推演引擎</h3>
+
+        <p>这是一份我自己写的 SOP，教虾怎么帮我们拆一份品牌 brief 并产出策略推演。</p>
+
+        <p>里面写了什么？</p>
+
+        <ul>
+          <li>拿到一个 brief，先按什么维度拆问题</li>
+          <li>必须产出一个 <strong>KOL × Campaign / KOL × Always-On / KOX × Campaign / KOX × Always-On</strong> 的四象限矩阵</li>
+          <li>每个象限里要给出几个候选方向</li>
+          <li>每个方向要附上"为什么这个方向成立"的判断逻辑</li>
+          <li>哪些情况下这个方向不成立（边界条件）</li>
+        </ul>
+
+        <p>这一份 SOP，原本只存在于我和 ICC 几个核心同事的脑子里。写下来交给虾之后，<strong>任何一个新同事来的时候，向虾发起一个"帮我拆这个 brief"，就能拿到一份接近我手工产出的草稿</strong>。</p>
+
+        <p>她不是在替代我，她是在让我和我的同事们的判断<strong>变得可复用</strong>。</p>
+
+        <h3>Skill 二：审稿（Content Review）</h3>
+
+        <p>这是我教虾审稿的 SOP。审一篇要发出去的内容稿，从四个维度过：</p>
+
+        <ol>
+          <li><strong>产品保真</strong>：产品信息、参数、机制、卖点有没有写错、有没有夸大</li>
+          <li><strong>Brief 合规</strong>：是不是按 brief 的核心信息和优先级写的，关键信息有没有漏</li>
+          <li><strong>KOL 风格适配</strong>：如果是给某个 KOL 写的，语气、用词、节奏、人设有没有跑偏</li>
+          <li><strong>品牌红线</strong>：违反品牌红线的句子（每个客户的红线列表都不一样，写在 skill 里）</li>
+        </ol>
+
+        <p>它过完之后会按这四个维度逐条挑问题，附原句和修改建议。</p>
+
+        <p>这一份 skill 也被我推到了一个<strong>私有 GitHub 仓库</strong>里——这样我在任何一台装了 OpenClaw 的电脑上，都能把它拉下来给我的虾用，公司同事也能拉。</p>
+
+        <blockquote>
+          <p>关键：这两个 skill 都是<strong>私有的</strong>，没有公开。<strong>你的经验是你的资产，用 OpenClaw 教养它的过程，就是把你脑子里的资产沉淀成一份可复用的、归你自己所有的"数字员工说明书"。</strong></p>
+          <p>这跟把数据交给某个 SaaS 厂商训练它们的模型，<strong>完全是两回事</strong>。</p>
+        </blockquote>
+
+        <h2 id="oc-multi">E. 一个公司怎么部署多只虾（多 Agent）</h2>
+
+        <p>一个公司里可能不止一个人需要虾，也不止一个场景需要虾。</p>
+
+        <p>OpenClaw 在飞书版上的玩法是这样的：</p>
+
+        <blockquote>
+          <p><strong>一个飞书企业可以装多只虾。每只虾是一个独立的 OpenClaw 账号，每个账号绑定一组不同的说明书、不同的人设、不同的脑子（大模型）、不同的工作区。</strong></p>
+        </blockquote>
+
+        <p>打个比方：</p>
+
+        <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>虾的名字</th>
+              <th>给谁用</th>
+              <th>装了哪些说明书</th>
+              <th>用的脑子</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>策略虾</strong></td>
+              <td>策略组同事</td>
+              <td>策略推演引擎</td>
+              <td>Claude（更擅长长链推理）</td>
+            </tr>
+            <tr>
+              <td><strong>审稿虾</strong></td>
+              <td>内容组同事</td>
+              <td>审稿 SOP + 各品牌红线</td>
+              <td>DeepSeek（中文语感好、便宜）</td>
+            </tr>
+            <tr>
+              <td><em>（未来可扩展）</em></td>
+              <td><em>研究 / 客户管理 / 运营报表</em></td>
+              <td><em>按需要再写</em></td>
+              <td><em>按需要选脑子</em></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <p>每只虾在飞书里就是一个机器人，@它就是在跟它说话。一个公司可以养出十几只各管一摊的虾。</p>
+
+        <h2 id="oc-resources">F. 资源清单</h2>
+
+        <ol>
+          <li><strong>官网</strong>：<a href="https://openclaw.ai/" target="_blank" rel="noopener">https://openclaw.ai/</a></li>
+          <li><strong>GitHub 源码</strong>：<a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">https://github.com/openclaw/openclaw</a> （开源、可看源码、可提 issue、可 fork）</li>
+          <li><strong>文档</strong>：<a href="https://docs.openclaw.ai/" target="_blank" rel="noopener">https://docs.openclaw.ai/</a></li>
+          <li><strong>入门页</strong>：<a href="https://docs.openclaw.ai/getting-started" target="_blank" rel="noopener">https://docs.openclaw.ai/getting-started</a></li>
+          <li><strong>Tool 列表</strong>：<a href="https://docs.openclaw.ai/tools" target="_blank" rel="noopener">https://docs.openclaw.ai/tools</a></li>
+          <li><strong>怎么写 Skill</strong>：<a href="https://docs.openclaw.ai/tools/creating-skills" target="_blank" rel="noopener">https://docs.openclaw.ai/tools/creating-skills</a></li>
+          <li><strong>飞书 OpenClaw 插件</strong>：飞书插件市场搜索 OpenClaw</li>
+        </ol>
+
+        <hr>
+
+        <p>OpenClaw 这件事最好玩的地方，是<strong class="hl">你养的虾是你自己的</strong>。它读过的 SOP、做过的活、记得的偏好，全部在你自己的工作区里。开源的本质就是这件事——没人能从你这里拿走它。</p>
+
       </div>
 
-      <ul>
-        <li><strong>Tool</strong>:具体的某个动作能力,比如"打开浏览器"。<strong>OpenClaw 自带的,是它的"手脚"</strong>。</li>
-        <li><strong>Skill</strong>:你写给虾的一份 SOP,<strong>告诉它在什么场景下、怎么用这些 Tool</strong>。是你"教"它的"说明书"。</li>
-        <li><strong>Plugin</strong>:把几个相关的 Skill <strong>打包成一个安装包</strong>,方便分享给别人。是教完之后的"打包礼盒"。</li>
+      <footer class="page-footer">
+        <p>by Wendy.Zhang · 2026</p>
+      </footer>
+
+    </article>
+
+  </div>
+</div>
+
+<!-- ============================================
+     TAB: Vibe Coding
+     ============================================ -->
+<div class="tab-panel" id="tab-vibecoding">
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-toc-label">目录</div>
+      <ul class="sidebar-toc">
+        <li>
+          <a class="part-link" href="#vc-why">起点</a>
+          <ul class="sub-list">
+            <li><a class="sub-link" href="#vc-why">为什么有这个站</a></li>
+            <li><a class="sub-link" href="#vc-learn">边干边学</a></li>
+            <li><a class="sub-link" href="#vc-what">什么是 Vibe Coding</a></li>
+          </ul>
+        </li>
+        <li>
+          <a class="part-link" href="#vc-flow">建站的三个工序</a>
+        </li>
+        <li>
+          <a class="part-link" href="#vc-build">实战：这个站怎么搭的</a>
+          <ul class="sub-list">
+            <li><a class="sub-link" href="#vc-s1">Step 1：说想法</a></li>
+            <li><a class="sub-link" href="#vc-s2">Step 2：它写你看</a></li>
+            <li><a class="sub-link" href="#vc-s3">Step 3：推到 GitHub</a></li>
+            <li><a class="sub-link" href="#vc-s4">Step 4：部署上线</a></li>
+            <li><a class="sub-link" href="#vc-s5">Step 5：它活了</a></li>
+          </ul>
+        </li>
+        <li>
+          <a class="part-link" href="#vc-feel">走完一遍之后</a>
+        </li>
+        <li>
+          <a class="part-link" href="#vc-iterate">然后你就会想迭代</a>
+        </li>
+        <li>
+          <a class="part-link" href="#vc-start">你也可以开始</a>
+        </li>
       </ul>
+    </aside>
 
-      <p>你可以这么记:</p>
+    <article class="page">
 
-      <blockquote>
-        <p><strong class="hl">Tool 是它生下来就有的;Skill 是你教它的;Plugin 是你教完之后打包送给同事的。</strong></p>
-      </blockquote>
+      <header class="page-header">
+        <div class="page-icon">🛠️</div>
+        <h1 class="page-title">Vibe Coding 入门</h1>
+        <p class="page-subtitle">不写代码，用嘴搭网站——以这个站为例</p>
+        <div class="wendy-note">
+          <span class="wendy-note-tag">💜 Wendy 私心</span>分享一遍我的 case 给你看——对未知的恐惧，<strong>「看过一遍」</strong>就解啦~
+        </div>
+      </header>
 
-      <h2 id="oc-cases">D-2. 真实案例:我自己教给虾的两个 Skill</h2>
+      <div class="page-body">
 
-      <p>两个我<strong>真的在用</strong>的 Skill。</p>
+        <h1 id="vc-why">起点：为什么有这个站</h1>
 
-      <p>我的虾(也就是 ICC 那只服务公司的策略 + 审稿 BoT)目前长着两个核心 Skill:</p>
+        <p>三个月前，我跟你现在一样。</p>
 
-      <h3>Skill 一:策略推演引擎</h3>
+        <p>最近很多朋友来找我聊 AI。他们的困境跟我三个月前一模一样——<strong>市面上 AI 教程不是没有，是实在太多了</strong>。多到眼花缭乱，反而不知道从何下手。很多人是被小龙虾（OpenClaw）吸引过来的，但真要上手的时候，又不知道先做什么。</p>
 
-      <p>这是一份我自己写的 SOP,教虾怎么帮我们拆一份品牌 brief 并产出策略推演。</p>
+        <p>所以我就想：把这几个月积累的东西汇总起来，做成一个集合地，给我的朋友们一个"从这里开始"的入口。这个网站的名字就叫 <code>ai-intro-for-friends</code>——给朋友的 AI 入门。</p>
 
-      <p>里面写了什么?</p>
+        <p><strong class="hl">你现在看的这整个 Playbook，就是我用嘴"写"出来的。</strong></p>
 
-      <ul>
-        <li>拿到一个 brief,先按什么维度拆问题</li>
-        <li>必须产出一个 <strong>KOL × Campaign / KOL × Always-On / KOX × Campaign / KOX × Always-On</strong> 的四象限矩阵</li>
-        <li>每个象限里要给出几个候选方向</li>
-        <li>每个方向要附上"为什么这个方向成立"的判断逻辑</li>
-        <li>哪些情况下这个方向不成立(边界条件)</li>
-      </ul>
+        <h2 id="vc-learn">边干边学，是唯一靠谱的路径</h2>
 
-      <p>这一份 SOP,原本只存在于我和 ICC 几个核心同事的脑子里。写下来交给虾之后,<strong>任何一个新同事来的时候,向虾发起一个"帮我拆这个 brief",就能拿到一份接近我手工产出的草稿</strong>。</p>
+        <p>这几个月自己摸索下来，我最大的体感是：</p>
 
-      <p>她不是在替代我,她是在让我和我的同事们的判断<strong>变得可复用</strong>。</p>
+        <blockquote>
+          <p>既不能纸上谈兵只看教程不动手——看十篇不如做一次。</p>
+          <p>也不能闭眼先动手——人对未知的产品，总是有恐惧的。</p>
+          <p><strong>边干边学，是唯一靠谱的路径。</strong></p>
+        </blockquote>
 
-      <h3>Skill 二:审稿(Content Review)</h3>
+        <p>Vibe Coding 恰好是"边干边学"的最佳实践——<strong>反馈循环极短</strong>。你说一句话，AI 写一段，你马上就能看到结果；不对就改，改了再看。整个过程你不是在"读教程"，你是在"做东西"——而你脑子里的知识，是在做的过程中自己长出来的。</p>
 
-      <p>这是我教虾审稿的 SOP。审一篇要发出去的内容稿,从四个维度过:</p>
+        <h2 id="vc-what">什么是 Vibe Coding</h2>
 
-      <ol>
-        <li><strong>产品保真</strong>:产品信息、参数、机制、卖点有没有写错、有没有夸大</li>
-        <li><strong>Brief 合规</strong>:是不是按 brief 的核心信息和优先级写的,关键信息有没有漏</li>
-        <li><strong>KOL 风格适配</strong>:如果是给某个 KOL 写的,语气、用词、节奏、人设有没有跑偏</li>
-        <li><strong>品牌红线</strong>:违反品牌红线的句子(每个客户的红线列表都不一样,写在 skill 里)</li>
-      </ol>
+        <p>Vibe Coding 是最近一两年冒出来的词，直译"氛围编程"。意思是：</p>
 
-      <p>它过完之后会按这四个维度逐条挑问题,附原句和修改建议。</p>
+        <blockquote>
+          <p><strong class="hl">你不写代码。你告诉 AI 你想要什么，AI 帮你写。</strong></p>
+        </blockquote>
 
-      <p>这一份 skill 也被我推到了一个<strong>私有 GitHub 仓库</strong>里——这样我在任何一台装了 OpenClaw 的电脑上,都能把它拉下来给我的虾用,公司同事也能拉。</p>
+        <p>你的活是三件：</p>
 
-      <blockquote>
-        <p>关键:这两个 skill 都是<strong>私有的</strong>,没有公开。<strong>你的经验是你的资产,用 OpenClaw 教养它的过程,就是把你脑子里的资产沉淀成一份可复用的、归你自己所有的"数字员工说明书"。</strong></p>
-        <p>这跟把数据交给某个 SaaS 厂商训练它们的模型,<strong>完全是两回事</strong>。</p>
-      </blockquote>
+        <ul>
+          <li><strong>把需求说清楚</strong>——"我想要一个什么样的东西"</li>
+          <li><strong>把 AI 的结果看明白</strong>——哪里对、哪里不对、哪里可以再好一点</li>
+          <li><strong>不满意就告诉它哪里不满意</strong>——"字太小""颜色不对""加个目录"</li>
+        </ul>
 
-      <h2 id="oc-multi">E. 一个公司怎么部署多只虾(多 Agent)</h2>
+        <p>这件事最早只在程序员圈里流行，因为他们看得懂代码、知道怎么指挥 AI。但这一两年工具越来越好用，<strong>非技术背景的人也能做——只要你会说话</strong>。</p>
 
-      <p>一个公司里可能不止一个人需要虾,也不止一个场景需要虾。</p>
+        <hr>
 
-      <p>OpenClaw 在飞书版上的玩法是这样的:</p>
+        <h1 id="vc-flow">从 0 搭一个 website，要经过哪几个工序</h1>
 
-      <blockquote>
-        <p><strong>一个飞书企业可以装多只虾。每只虾是一个独立的 OpenClaw 账号,每个账号绑定一组不同的说明书、不同的人设、不同的脑子(大模型)、不同的工作区。</strong></p>
-      </blockquote>
+        <p>你可能会以为"做网站 = 写很多代码"。但这件事拆开来看，其实就是<strong>三个工序</strong>，每个工序对应一个工具：</p>
 
-      <p>打个比方:</p>
+        <div class="workflow">
+          <div class="workflow-step">
+            <div class="workflow-num">1</div>
+            <div class="workflow-stage">工序一</div>
+            <div class="workflow-name">想清楚 + 让 AI 写</div>
+            <div class="workflow-tool">工具：<br><strong>Claude Code</strong> 或 Cursor</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="workflow-num">2</div>
+            <div class="workflow-stage">工序二</div>
+            <div class="workflow-name">存起来<br>（代码有个家）</div>
+            <div class="workflow-tool">工具：<br><strong>GitHub</strong>（代码仓库）</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="workflow-num">3</div>
+            <div class="workflow-stage">工序三</div>
+            <div class="workflow-name">让别人能打开<br>（上线）</div>
+            <div class="workflow-tool">工具：<br><strong>Render</strong> / Vercel / GitHub Pages</div>
+          </div>
+        </div>
 
-      <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>虾的名字</th>
-            <th>给谁用</th>
-            <th>装了哪些说明书</th>
-            <th>用的脑子</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>策略虾</strong></td>
-            <td>策略组同事</td>
-            <td>策略推演引擎</td>
-            <td>Claude(更擅长长链推理)</td>
-          </tr>
-          <tr>
-            <td><strong>审稿虾</strong></td>
-            <td>内容组同事</td>
-            <td>审稿 SOP + 各品牌红线</td>
-            <td>DeepSeek(中文语感好、便宜)</td>
-          </tr>
-          <tr>
-            <td><em>(未来可扩展)</em></td>
-            <td><em>研究 / 客户管理 / 运营报表</em></td>
-            <td><em>按需要再写</em></td>
-            <td><em>按需要选脑子</em></td>
-          </tr>
-        </tbody>
-      </table>
+        <p>三个工序是<strong>接力关系</strong>——上一棒做完，交给下一棒：</p>
+
+        <ul>
+          <li><strong>工序一</strong>：你跟 AI 对话，在你自己的电脑上写出一份能跑的代码。但这时候它只在你电脑里，别人看不到。</li>
+          <li><strong>工序二</strong>：把代码推到 GitHub，相当于放进一个"作品仓库"。这一步解决的是"代码得有个地方存着"——不然你换台电脑就丢了，也没法分享给别人。</li>
+          <li><strong>工序三</strong>：从 GitHub 里把代码拉出来，部署到一个能被访问的公网地址上。这一步之后，你有了一个 <code>xxx.onrender.com</code> 这样的链接，<strong>谁都能打开</strong>。</li>
+        </ul>
+
+        <blockquote>
+          <p><strong>就这三步。没有了。</strong></p>
+          <p>即使你今天不打算搭网站，知道"原来做一个网站就这三步"，以后再听人聊什么前端后端部署 CI/CD，也不会再懵。</p>
+        </blockquote>
+
+        <hr>
+
+        <h1 id="vc-build">实战：我是怎么走完这三个工序的</h1>
+
+        <p>先说结论：<strong class="hl">第一版从打开 Claude Code 到网站上线，前后不到 1 小时</strong>。</p>
+
+        <p>下面是完整过程。</p>
+
+        <h2 id="vc-s1">Step 1：打开 Claude Code，把想法 summary 给它</h2>
+
+        <p>我打开 Claude Code，把脑子里的想法跟它说了一遍：</p>
+
+        <blockquote>
+          <p>我想做一个网页，给我的营销朋友们看。分享三件事：</p>
+          <p>1. 基本的 AI 概念（AI 世界地图）<br>
+          2. 我自己用下来的几个 tips<br>
+          3. 从 0 上手小龙虾（OpenClaw 安装到 skill 定制）</p>
+        </blockquote>
+
+        <p>就这样。<strong>没有任何代码，没有任何技术词</strong>——就像跟一个懂技术的朋友聊"我想做一个什么样的东西"。</p>
+
+        <p>它会自己决定用什么技术栈（这一步你完全不用管），帮你创建文件、生成初版内容。</p>
+
+        <h2 id="vc-s2">Step 2：它写，你看，不好看就说</h2>
+
+        <p>第一版写完之后，老实讲——<strong>不太好看</strong>。</p>
+
+        <p>我就告诉它："改成 Notion 风格。" 它就重做了一版视觉。</p>
+
+        <p>这个循环整个过程里不断重复：</p>
+
+        <ul>
+          <li>字太小 → "正文字号大一点"</li>
+          <li>想加目录 → "左边加个导航"</li>
+          <li>颜色不对 → "主色换成紫色"</li>
+          <li>段落太挤 → "行距松一点"</li>
+        </ul>
+
+        <p><strong>不用想术语，用大白话描述你想要的</strong>。它会自己翻译成代码。</p>
+
+        <p>工序一到这里就做完了——你电脑里有了一份能在浏览器里打开的 HTML。</p>
+
+        <h2 id="vc-s3">Step 3：推到 GitHub（工序二）</h2>
+
+        <p>GitHub 是什么？简单讲，就是<strong>你的作品仓库</strong>。代码存在那里，你自己能从任何一台电脑拉下来接着改，也能分享给别人。</p>
+
+        <p>怎么推？我也不会——就问 Claude："现在怎么把这个推到 GitHub 上？"</p>
+
+        <p>它一步一步告诉我怎么做：注册账号、建仓库、装 Git、把本地代码推上去。每一步我只要照着做。<strong>遇到卡点，截图发给 Claude，问"这里我该怎么办"</strong>，它就告诉我下一步。</p>
+
+        <p>你只需要会复制粘贴 + 会截图。</p>
+
+        <h2 id="vc-s4">Step 4：部署到 Render（工序三）</h2>
+
+        <p>推到 GitHub 之后，网站还没上线——没人能打开。这一步要把它<strong>部署</strong>到一个能被公网访问的地方。</p>
+
+        <p>我选的是 Render（免费、简单、对新手友好）。流程一样——不会就问 Claude，卡了就截图。它会告诉你：</p>
+
+        <ul>
+          <li>去 Render 注册账号</li>
+          <li>把你的 GitHub 仓库授权给它</li>
+          <li>点几下按钮，配置一下</li>
+          <li>等它自己跑完</li>
+        </ul>
+
+        <h2 id="vc-s5">Step 5：它活了</h2>
+
+        <p>Render 会给你一个链接，比如 <code>xxx.onrender.com</code>。点进去——<strong>就是你刚刚"说"出来的网站</strong>。</p>
+
+        <p>这一刻非常魔法。你刚才还在一个聊天框里描述你想要什么，现在它真的在互联网上存在。你可以把这个链接发给任何人，任何人都能打开。</p>
+
+        <p>从打开 Claude Code 开始，到这一刻，<strong>不到 1 小时</strong>。</p>
+
+        <hr>
+
+        <h1 id="vc-feel">走完一遍之后的那个感觉</h1>
+
+        <p>老实讲，我没什么特别踩坑的。第一次走完之后，最强烈的感觉是：</p>
+
+        <blockquote>
+          <p><strong class="hl">"Wow！原来如此——原来轻量级部署一个 website 就这几个步骤。"</strong></p>
+        </blockquote>
+
+        <p>当你真的走过一遍，对"网站是怎么做出来的""代码是怎么上线的"这些原本神秘的东西，<strong>就完全没有了陌生的恐惧</strong>。</p>
+
+        <p>还有一件特别重要的事——因为全程有 Claude 在：</p>
+
+        <blockquote>
+          <p><strong>我完全不会害怕或羞耻问出一些"蠢问题"。</strong></p>
+          <p>它不会笑话我，它只会一步一步教我。</p>
+          <p>这件事让整个过程推进得特别顺利。</p>
+        </blockquote>
+
+        <p>这点再怎么强调都不过分。非技术背景的人最大的心理障碍，不是"我学不会"，而是"我怕问出一个让人觉得我很蠢的问题"。跟 Claude 协作的时候，这个心理障碍<strong>直接没了</strong>——你问多蠢的问题它都会认真回答。</p>
+
+        <hr>
+
+        <h1 id="vc-iterate">然后你就会想迭代</h1>
+
+        <p>有了第一次的信心，你就会想继续折腾它。</p>
+
+        <p>你现在看到的这个多 tab 版本，就是我最近的改版——从一个单页的长文，改成了一个有首页、有板块、会继续生长的站。<strong>这次改版也是 vibe coding 做的</strong>。</p>
+
+        <p>但我得诚实说一件事：</p>
+
+        <blockquote>
+          <p><strong>一旦页面变复杂，设计和 UX / UI 的规划就比内容本身难多了。</strong></p>
+          <p>哈哈，这个一直是我欠缺的部分。我在和 AI 一起学习、一起进步。</p>
+        </blockquote>
+
+        <p>Vibe Coding 不是魔法。它让<strong>启动变得很轻</strong>——让你有机会从"完全不敢开始"变成"做出了第一版再说"。但<strong>往后的精细度、设计感、专业度——依然要你自己持续学、持续迭代</strong>。</p>
+
+        <p>对我来说这挺好的——它让我有了动手的勇气，也让我看见自己还缺什么。这本身就是成长。</p>
+
+        <hr>
+
+        <h1 id="vc-start">你也可以开始</h1>
+
+        <p>随便想一个你自己的小东西：</p>
+
+        <ul>
+          <li>一份给客户的提案，想做成可分享的网页</li>
+          <li>一个你自己的简历 / 作品集</li>
+          <li>一个整理 KOL 资料的小工具</li>
+          <li>一个给朋友的 xxx——就像我给朋友的 AI 入门</li>
+        </ul>
+
+        <p><strong>不一定要是"网站"</strong>。Vibe Coding 可以做网页、做小程序、做自动化脚本、做数据表格。本质都是：<strong>把你脑子里模糊的想法，用嘴讲给 AI 听，让它帮你变出来</strong>。</p>
+
+        <p>启动成本是零。你唯一要跨过去的，是"我要不要开始"那一步。</p>
+
+        <blockquote>
+          <p><strong class="hl">你不需要变成程序员。你只需要开始做一件你以前觉得自己做不了的事。</strong></p>
+        </blockquote>
+
       </div>
 
-      <p>每只虾在飞书里就是一个机器人,@它就是在跟它说话。一个公司可以养出十几只各管一摊的虾。</p>
+      <footer class="page-footer">
+        <p>by Wendy.Zhang · 2026</p>
+      </footer>
 
-      <h2 id="oc-resources">F. 资源清单</h2>
+    </article>
 
-      <ol>
-        <li><strong>官网</strong>:<a href="https://openclaw.ai/" target="_blank" rel="noopener">https://openclaw.ai/</a></li>
-        <li><strong>GitHub 源码</strong>:<a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">https://github.com/openclaw/openclaw</a> (开源、可看源码、可提 issue、可 fork)</li>
-        <li><strong>文档</strong>:<a href="https://docs.openclaw.ai/" target="_blank" rel="noopener">https://docs.openclaw.ai/</a></li>
-        <li><strong>入门页</strong>:<a href="https://docs.openclaw.ai/getting-started" target="_blank" rel="noopener">https://docs.openclaw.ai/getting-started</a></li>
-        <li><strong>Tool 列表</strong>:<a href="https://docs.openclaw.ai/tools" target="_blank" rel="noopener">https://docs.openclaw.ai/tools</a></li>
-        <li><strong>怎么写 Skill</strong>:<a href="https://docs.openclaw.ai/tools/creating-skills" target="_blank" rel="noopener">https://docs.openclaw.ai/tools/creating-skills</a></li>
-        <li><strong>飞书 OpenClaw 插件</strong>:飞书插件市场搜索 OpenClaw</li>
-        <li><strong>Cursor</strong>(黑窗口报错的翻译官):<a href="https://cursor.com/" target="_blank" rel="noopener">https://cursor.com/</a></li>
-      </ol>
+  </div>
+</div>
 
-      <hr>
+<!-- ============================================
+     TAB: 好用的 AI
+     ============================================ -->
+<div class="tab-panel" id="tab-tools">
+  <div class="layout">
 
-      <p>OpenClaw 这件事最好玩的地方,是<strong class="hl">你养的虾是你自己的</strong>。它读过的 SOP、做过的活、记得的偏好,全部在你自己的工作区里。开源的本质就是这件事——没人能从你这里拿走它。</p>
+    <aside class="sidebar">
+      <div class="sidebar-toc-label">目录</div>
+      <ul class="sidebar-toc">
+        <li><a class="part-link" href="#tl-intro">开场</a></li>
+        <li>
+          <a class="part-link" href="#tl-prereq">先把地基打好</a>
+          <ul class="sub-list">
+            <li><a class="sub-link" href="#tl-nexitally">Nexitally</a></li>
+          </ul>
+        </li>
+        <li>
+          <a class="part-link" href="#tl-tools">6 个 AI 工具</a>
+          <ul class="sub-list">
+            <li><a class="sub-link" href="#tl-cc">Claude Code</a></li>
+            <li><a class="sub-link" href="#tl-cursor">Cursor</a></li>
+            <li><a class="sub-link" href="#tl-genspark">Genspark</a></li>
+            <li><a class="sub-link" href="#tl-gemini">Gemini</a></li>
+            <li><a class="sub-link" href="#tl-notebook">NotebookLM</a></li>
+            <li><a class="sub-link" href="#tl-github">GitHub</a></li>
+          </ul>
+        </li>
+        <li>
+          <a class="part-link" href="#tl-combo">组合拳</a>
+          <ul class="sub-list">
+            <li><a class="sub-link" href="#tl-combo-research">搜资料 + 消化</a></li>
+            <li><a class="sub-link" href="#tl-combo-design">做 PPT / 出图</a></li>
+            <li><a class="sub-link" href="#tl-combo-site">搭一个网站</a></li>
+          </ul>
+        </li>
+        <li><a class="part-link" href="#tl-end">写在最后</a></li>
+      </ul>
+    </aside>
 
-    </div>
+    <article class="page">
 
-    <footer class="page-footer">
-      <p>by Wendy · 2026 / 04</p>
-      <p>一份资深营销人写给资深营销人的 AI 实操分享</p>
-    </footer>
+      <header class="page-header">
+        <div class="page-icon">⚡</div>
+        <h1 class="page-title">好用的 AI 工具</h1>
+        <p class="page-subtitle">不做全景测评，只讲我真的在用的</p>
+      </header>
 
-  </article>
+      <div class="page-body">
 
+        <h1 id="tl-intro">开场：只推跑通过的</h1>
+
+        <p>市面上"AI 工具推荐"的文章铺天盖地，大多数看完你还是不知道该从哪个开始。</p>
+
+        <p>我想给你的是另一种——<strong>我只推我真的在用、而且用了不是一两天的</strong>。每个产品都讲清楚三件事：</p>
+
+        <ul>
+          <li>我拿它干嘛（具体活儿，不是功能清单）</li>
+          <li>它最让我离不开的点</li>
+          <li>我踩过的坑 / 不爽的地方</li>
+        </ul>
+
+        <p>最后给你几个<strong>跨产品组合拳</strong>——单独用一个工具是一回事，搭起来用是另一回事。</p>
+
+        <div class="heads-up">
+          <p class="heads-up-title">⚠️ 先说一件事</p>
+          <p>对于中国区伙伴来说，下面这些 AI 工具<strong>几乎都需要"科学上网"</strong>——Claude Code、Cursor、Gemini、NotebookLM 基本全都绕不过去。所以在折腾这些 AI 之前，你得先把网络这件事搞定，不然连登录都进不去。</p>
+          <p>这也是为什么我把 <strong>Nexitally</strong> 单独拎出来，放在所有 AI 工具<strong>前面</strong>讲——它不是 AI，但它是让这一切能跑起来的前提。</p>
+        </div>
+
+        <hr>
+
+        <h1 id="tl-prereq">先把地基打好</h1>
+
+        <p>这个小节只有一个工具，但它是前置中的前置——跳过它，后面 6 个 AI 工具大概率一个都用不成。</p>
+
+        <div class="tool-stack">
+
+          <!-- Nexitally -->
+          <div class="tool-card" id="tl-nexitally">
+            <div class="tool-card-head">
+              <span class="tool-card-icon">🌐</span>
+              <span class="tool-card-name">Nexitally</span>
+            </div>
+            <div class="tool-card-tagline">让上面那些 AI 工具能跑起来的"地基"</div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">我拿它干嘛</div>
+              <div class="tool-card-row-body" data-todo="wendy">
+                <!-- TODO Wendy：你具体怎么用 Nexitally？比如日常访问 Claude Code / Gemini / GitHub 这些的网络通道 -->
+                它是我日常访问 Claude Code、Cursor、Gemini、NotebookLM、GitHub 等服务的<strong>网络通道</strong>。没有它，后面那 6 个工具我基本都打不开。
+              </div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">离不开的点</div>
+              <div class="tool-card-row-body">算是我用过的比较稳定的一个"科学"工具。当然，你手里如果已经有<strong>趁手、稳定</strong>的，继续用就好——这里重点是"稳定"本身，不是非得用哪一家。</div>
+            </div>
+          </div>
+
+        </div>
+
+        <hr>
+
+        <h1 id="tl-tools">6 个 AI 工具</h1>
+
+        <p>按<strong>使用频次和依赖度</strong>从高到低排。越往上的，我每天都开；越往下的，有特定场景才会想起来。</p>
+
+        <div class="tool-stack">
+
+          <!-- Claude Code -->
+          <div class="tool-card" id="tl-cc">
+            <div class="tool-card-head">
+              <span class="tool-card-icon">🤖</span>
+              <span class="tool-card-name">Claude Code</span>
+            </div>
+            <div class="tool-card-tagline">我 70% 的活都是用它干的</div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">我拿它干嘛</div>
+              <div class="tool-card-row-body">写网页、搭知识库、做 AI 营销变局的沙盘、和我一起写 skill、甚至公众号的文章和配图——都是 Claude Code 做的。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">离不开的点</div>
+              <div class="tool-card-row-body">一个工具把脑力活、工程活、创作活都接住了。几乎没有我想做、但它干不了的事。说它是我的"主操作台"也不为过。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">踩过的坑</div>
+              <div class="tool-card-row-body">对网络环境和账号要求太严格了，<strong>对简中区用户非常不友好</strong>。建议先把网络环境搞定再开始用，不然一上来就会被劝退。</div>
+            </div>
+          </div>
+
+          <!-- Cursor -->
+          <div class="tool-card" id="tl-cursor">
+            <div class="tool-card-head">
+              <span class="tool-card-icon">📝</span>
+              <span class="tool-card-name">Cursor</span>
+            </div>
+            <div class="tool-card-tagline">Claude Code 的背靠背搭档</div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">我拿它干嘛</div>
+              <div class="tool-card-row-body">能做的事几乎和 Claude Code 一样，是我的 Plan B。尤其是本地文件相关的活，我会优先丢给 Cursor。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">离不开的点</div>
+              <div class="tool-card-row-body">国内支付友好、网络环境要求相对宽松、还能切最好的模型（Opus 4.6、GPT 5.4 都有）。对简中区用户来说上手门槛低得多。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">小建议</div>
+              <div class="tool-card-row-body">两个都用的话，容易忘记自己刚才在哪个里跟 AI 聊过什么。可以按场景分开——比如本地文件的活交给 Cursor，其他的给 Claude Code。</div>
+            </div>
+          </div>
+
+          <!-- Genspark -->
+          <div class="tool-card" id="tl-genspark">
+            <div class="tool-card-head">
+              <span class="tool-card-icon">🎨</span>
+              <span class="tool-card-name">Genspark</span>
+            </div>
+            <div class="tool-card-tagline">非设计师的 PPT 和出图救星</div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">我拿它干嘛</div>
+              <div class="tool-card-row-body">agent 功能里的 <strong>PPT 生成</strong> 和 <strong>nanobanana 出图</strong>。这两个是我高频使用的。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">离不开的点</div>
+              <div class="tool-card-row-body">它把 PPT 和 nanobanana 封装过一次——对不是设计师的我非常友好。直接出结果，不用自己调参数、不用懂设计原理。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">适用场景</div>
+              <div class="tool-card-row-body">适合"我要一个差不多的东西，赶紧上"。如果你想精细控制每一个细节，它不够用——但多数时候我们不需要那么精细。</div>
+            </div>
+          </div>
+
+          <!-- Gemini -->
+          <div class="tool-card" id="tl-gemini">
+            <div class="tool-card-head">
+              <span class="tool-card-icon">💎</span>
+              <span class="tool-card-name">Gemini</span>
+            </div>
+            <div class="tool-card-tagline">有灵性的脑暴搭子</div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">我拿它干嘛</div>
+              <div class="tool-card-row-body">deepresearch（深度调研）+ brainstorming（创意脑暴）。发散思考那一端的活，我交给它。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">离不开的点</div>
+              <div class="tool-card-row-body">是我用过的模型里，感觉"<strong>比较有灵性</strong>"的一个。你抛一个模糊的想法过去，它能接住，再反弹回来一些你没想到的角度。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">小建议</div>
+              <div class="tool-card-row-body">它是"发散"那一端。收敛、整理的活交给 NotebookLM 更合适。两个搭着用才是完整的闭环。</div>
+            </div>
+          </div>
+
+          <!-- NotebookLM -->
+          <div class="tool-card" id="tl-notebook">
+            <div class="tool-card-head">
+              <span class="tool-card-icon">📚</span>
+              <span class="tool-card-name">NotebookLM</span>
+            </div>
+            <div class="tool-card-tagline">读不过来的材料，让它帮你可视化</div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">我拿它干嘛</div>
+              <div class="tool-card-row-body">把一堆文本材料（PDF、文章、笔记）喂进去，让它可视化地整理成<strong>卡片 / PPT / 视频 / 播客</strong>。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">离不开的点</div>
+              <div class="tool-card-row-body">文本读不过来的时候，用可视化来协助理解——大脑接受起来轻松很多。尤其是它的播客功能，通勤路上可以"听"掉一份研究报告。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">小建议</div>
+              <div class="tool-card-row-body">它是"整理"工具不是"创造"工具，别指望它替你思考。材料的选择和判断还是你的活。</div>
+            </div>
+          </div>
+
+          <!-- GitHub -->
+          <div class="tool-card" id="tl-github">
+            <div class="tool-card-head">
+              <span class="tool-card-icon">📦</span>
+              <span class="tool-card-name">GitHub</span>
+            </div>
+            <div class="tool-card-tagline">从"skill 仓库"到"我自己的备份"</div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">我的理解演变</div>
+              <div class="tool-card-row-body">一开始我以为它就是个 <strong>skill 仓库</strong>（经常会刷到什么爆火的 skill，从那里下载）。后来自己做网页了才发现——它是很多代码的仓库，也可以是<strong>我所有项目的备份</strong>。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">离不开的点</div>
+              <div class="tool-card-row-body">一旦你开始自己做东西，GitHub 就会从"别人的货架"变成"你自己的家"。你的每一版改动它都记得。</div>
+            </div>
+            <div class="tool-card-row">
+              <div class="tool-card-row-label">踩过的坑</div>
+              <div class="tool-card-row-body">界面对新手确实有点劝退，但你<strong>不需要全懂</strong>——让 Claude Code 或 Cursor 帮你 commit 和 push 就够了。你只要知道"代码去哪了"就行。</div>
+            </div>
+          </div>
+
+        </div>
+
+        <hr>
+
+        <h1 id="tl-combo">组合拳：搭起来用，1+1 &gt; 2</h1>
+
+        <p>单独介绍每个工具只是第一步。真正能跑起来的工作流，都是几个工具搭配着用的——一个负责 A，一个负责 B，接力完成一件事。</p>
+
+        <div class="combo-stack">
+
+          <!-- Combo 1: 搜资料 + 消化 -->
+          <div class="combo-card" id="tl-combo-research">
+            <div class="combo-head">
+              <span class="combo-icon">🔍</span>
+              <span class="combo-name">搜资料 + 消化知识</span>
+            </div>
+            <div class="combo-sub">一个负责"想到"，一个负责"看清"</div>
+            <div class="combo-flow">
+              <span class="combo-tool">Gemini</span>
+              <span class="combo-arrow">→</span>
+              <span class="combo-tool">NotebookLM</span>
+            </div>
+            <div class="combo-desc">
+              <p><strong>想研究一个新话题？</strong>先让 Gemini 做一轮 deepresearch，把散落在各处的信息抓一遍；然后把结果喂给 NotebookLM，让它整理成卡片、PPT 或者播客。</p>
+              <p>Gemini 在"发散 & 找到"这一端特别强，NotebookLM 在"收敛 & 看清"那一端特别强。两个搭着用，一篇复杂的报告可以在一两个小时里就变成你大脑能吸收的形状。</p>
+            </div>
+          </div>
+
+          <!-- Combo 2: 做 PPT / 出图 -->
+          <div class="combo-card" id="tl-combo-design">
+            <div class="combo-head">
+              <span class="combo-icon">🎨</span>
+              <span class="combo-name">做 PPT / 出图</span>
+            </div>
+            <div class="combo-sub">对非设计师来说性价比最高的单品</div>
+            <div class="combo-flow">
+              <span class="combo-tool">Genspark</span>
+              <span class="combo-arrow">（一个就够）</span>
+            </div>
+            <div class="combo-desc">
+              <p>这个"组合"其实只有一个工具——但我还是想单独拎出来讲，因为它替代的是"<strong>找设计外包</strong>"这件事。</p>
+              <p>你不需要自己会 Figma，不需要会 Photoshop，不需要学 PPT 模板审美。把需求告诉 Genspark 的 agent，几分钟出结果，大部分场景下够用。对非设计背景的人来说，这是我觉得最值得付费的工具之一。</p>
+            </div>
+          </div>
+
+          <!-- Combo 3: 搭网站 -->
+          <div class="combo-card" id="tl-combo-site">
+            <div class="combo-head">
+              <span class="combo-icon">🌐</span>
+              <span class="combo-name">搭一个网站（工具视角）</span>
+            </div>
+            <div class="combo-sub">三个工具，各自扮演一个角色</div>
+            <div class="combo-flow">
+              <span class="combo-tool">Claude Code</span>
+              <span class="combo-arrow">→</span>
+              <span class="combo-tool">GitHub</span>
+              <span class="combo-arrow">→</span>
+              <span class="combo-tool">Render</span>
+            </div>
+            <div class="combo-desc">
+              <p><strong>Claude Code 负责写</strong>——你用嘴告诉它要什么，它把代码写出来、在本地能看到效果。</p>
+              <p><strong>GitHub 负责存</strong>——代码要有个家，它是你所有改动的历史档案馆。</p>
+              <p><strong>Render 负责上线</strong>——把 GitHub 上的代码变成一个别人能打开的网址。</p>
+              <p>你就是这三个工具的"指挥"，每个工具接一段活，串起来就是一个跑起来的网站。</p>
+              <div class="combo-note">
+                这里讲的是<strong>工具视角</strong>（每个工具干嘛）。如果你想看<strong>完整工序</strong>（从 0 到 1 的全流程）——<a href="#" onclick="switchTab('vibecoding'); return false;">去 Vibe Coding tab</a>，那边是实战版。
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <hr>
+
+        <h1 id="tl-end">写在最后：工具会换，原则不会</h1>
+
+        <p>这份清单是 2026 年 4 月的版本。过几个月可能就不对了——新的工具会冒出来，旧的工具会被替代。</p>
+
+        <p>但有三条原则不会变：</p>
+
+        <ul>
+          <li><strong>只推跑通过的</strong>——没真的用过的工具，再火我也不推荐给你</li>
+          <li><strong>跟着活选工具，不是反过来</strong>——先想清楚你要做什么，再找对应的工具，不要看到新工具就想"我能拿它干嘛"</li>
+          <li><strong>边用边换，不求长情</strong>——哪个顺手用哪个，这个月用 A，下个月发现 B 更好就换 B，工具是你的，不是你伺候它</li>
+        </ul>
+
+        <p>最好的工具，是<strong class="hl">那个能让你今天就开始动手的</strong>。</p>
+
+      </div>
+
+      <footer class="page-footer">
+        <p>by Wendy.Zhang · 2026</p>
+      </footer>
+
+    </article>
+
+  </div>
 </div>
 
 <button class="back-to-top" id="back-to-top" aria-label="回到顶部">↑</button>
 
 <script>
+  // ============================================
+  // Tab switching
+  // ============================================
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  function switchTab(tabId) {
+    tabBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tabId);
+    });
+    tabPanels.forEach(panel => {
+      panel.classList.toggle('active', panel.id === 'tab-' + tabId);
+    });
+    window.scrollTo({ top: 0, behavior: 'instant' });
+
+    // Re-setup observers for the new active panel
+    setupTocObserver();
+  }
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  // ============================================
   // Reading progress bar
+  // ============================================
   const progressFill = document.getElementById('progress-fill');
   const backBtn = document.getElementById('back-to-top');
 
@@ -1745,60 +3088,92 @@ description: 一个简单的打招呼技能。
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
+  // ============================================
   // Active TOC highlighting via IntersectionObserver
-  const headings = document.querySelectorAll('.page-body h1[id], .page-body h2[id]');
-  const tocLinks = document.querySelectorAll('.sidebar-toc a[href^="#"]');
-  const linkMap = {};
-  tocLinks.forEach(link => {
-    const id = link.getAttribute('href').slice(1);
-    linkMap[id] = link;
-  });
+  // ============================================
+  let currentObserver = null;
 
-  let visibleIds = new Set();
+  function setupTocObserver() {
+    if (currentObserver) {
+      currentObserver.disconnect();
+      currentObserver = null;
+    }
 
-  function updateActive() {
-    // Find topmost heading among visible ones
-    let topId = null;
-    let topY = Infinity;
-    visibleIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      if (rect.top < topY) {
-        topY = rect.top;
-        topId = id;
-      }
+    const activePanel = document.querySelector('.tab-panel.active');
+    if (!activePanel) return;
+
+    const headings = activePanel.querySelectorAll('.page-body h1[id], .page-body h2[id]');
+    const tocLinks = activePanel.querySelectorAll('.sidebar-toc a[href^="#"]');
+
+    if (headings.length === 0 || tocLinks.length === 0) return;
+
+    const linkMap = {};
+    tocLinks.forEach(link => {
+      const id = link.getAttribute('href').slice(1);
+      linkMap[id] = link;
     });
 
-    // Fallback: if nothing visible, find last heading above viewport top
-    if (!topId) {
-      let lastAbove = null;
-      headings.forEach(h => {
-        if (h.getBoundingClientRect().top < 100) lastAbove = h.id;
+    let visibleIds = new Set();
+
+    function updateActive() {
+      let topId = null;
+      let topY = Infinity;
+      visibleIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        if (rect.top < topY) {
+          topY = rect.top;
+          topId = id;
+        }
       });
-      topId = lastAbove;
+
+      if (!topId) {
+        let lastAbove = null;
+        headings.forEach(h => {
+          if (h.getBoundingClientRect().top < 100) lastAbove = h.id;
+        });
+        topId = lastAbove;
+      }
+
+      tocLinks.forEach(l => l.classList.remove('active'));
+      if (topId && linkMap[topId]) {
+        linkMap[topId].classList.add('active');
+        const parent = linkMap[topId].closest('li')?.parentElement?.closest('li')?.querySelector('.part-link');
+        if (parent) parent.classList.add('active');
+      }
     }
 
-    tocLinks.forEach(l => l.classList.remove('active'));
-    if (topId && linkMap[topId]) {
-      linkMap[topId].classList.add('active');
-      // If this is a sub-link, also activate its parent part-link
-      const parent = linkMap[topId].closest('li')?.parentElement?.closest('li')?.querySelector('.part-link');
-      if (parent) parent.classList.add('active');
-    }
+    currentObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) visibleIds.add(entry.target.id);
+        else visibleIds.delete(entry.target.id);
+      });
+      updateActive();
+    }, { rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+
+    headings.forEach(h => currentObserver.observe(h));
+    setTimeout(updateActive, 100);
   }
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) visibleIds.add(entry.target.id);
-      else visibleIds.delete(entry.target.id);
-    });
-    updateActive();
-  }, { rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+  // Initial setup
+  setupTocObserver();
 
-  headings.forEach(h => observer.observe(h));
-  // Initial
-  setTimeout(updateActive, 100);
+  // Handle direct URL hash on load
+  if (window.location.hash) {
+    const hash = window.location.hash.slice(1);
+    // Find which panel contains this hash
+    tabPanels.forEach(panel => {
+      const target = panel.querySelector('#' + CSS.escape(hash));
+      if (target) {
+        const tabId = panel.id.replace('tab-', '');
+        switchTab(tabId);
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    });
+  }
 </script>
 
 </body>
